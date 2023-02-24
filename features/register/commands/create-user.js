@@ -1,22 +1,40 @@
-const registerRepo = require('../repository');
+const User = require('../../../models/Users');
+const bcrypt = require('bcrypt');
 
 async function createUser(req, res) {
-  let user = {};
-  const registerSuccessMessage = 'You have successfully registered, you can now log in.';
+  const { username, email, password } = req.body;
+
   try {
-    user = await registerRepo.createUser(req.body);
-  } catch (error) {
-    user = error;
-  }
-  if (user.email) {
-    req.session.messages = { success: registerSuccessMessage };
+    const hashedPass = await bcrypt.hash(password, 5);
+
+    const user = new User({
+      username,
+      email,
+      password: hashedPass,
+      created_at: new Date(),
+      updated_at: new Date(),
+      email_verified_at: new Date(),
+    });
+
+    await user.save();
+
+    req.session.messages = { success: 'You have successfully registered, you can now log in.' };
     res.redirect('/login');
+  } catch (error) {
+    const { code, message } = error;
+    let databaseError = '';
+
+    if (code === 11000) {
+      databaseError = 'The email has already been taken.';
+    } else {
+      databaseError = `Something went wrong: ${message}`;
+      console.log(error.stack);
+
+    }
+
+    req.session.messages = { databaseError };
+    res.redirect('/register');
   }
-  const { code } = user;
-  const databaseError =
-    code === '23505' ? 'The email has already been taken.' : 'Something went wrong.';
-  req.session.messages = { databaseError };
-  res.redirect('/register');
 }
 
 module.exports = createUser;

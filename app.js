@@ -7,25 +7,22 @@ const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const RedisStore = require('connect-redis')(session);
+const mongoose = require('mongoose');
 
 const initAuthMiddleware = require('./features/login/init-auth-middleware');
 const indexRouter = require('./routes/index');
+const mongoURI = 'mongodb://localhost:27017/vixbot';
 
-const redisStoreConfig = {
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT,
-};
-
-if (process.env.REDIS_URL) {
-  redisStoreConfig.url = process.env.REDIS_URL; // this will use the REDIS_URL required for logging into the Redis addon provided by Heroku
-}
-
-if (process.env.REDIS_PASSWORD) {
-  redisStoreConfig.password = process.env.REDIS_PASSWORD; // this will use the REDIS_PASSWORD if required
-}
-
-const redisStore = new RedisStore(redisStoreConfig);
+mongoose.connect('mongodb://localhost:27017/vbot', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => {
+  console.log('Connected to database');
+}).catch((error) => {
+  console.error('Error connecting to database:', error);
+});
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 const staticFolder = process.env.NODE_ENV === 'development' ? 'public' : 'dist';
 const app = express();
@@ -43,7 +40,6 @@ app.use(express.static(path.join(__dirname, staticFolder)));
 const { COOKIE_EXPIRATION_MS } = process.env;
 app.use(
   session({
-    store: redisStore,
     secret: 'keyboard cat',
     name: process.env.SESSION_COOKIE_NAME,
     resave: false,

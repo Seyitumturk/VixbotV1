@@ -1,4 +1,4 @@
-const NAME_MIN = 3;
+const NAME_MIN = 1;
 const NAME_MAX = 60;
 const PASSWORD_MIN = 6;
 const PASSWORD_MAX = 30;

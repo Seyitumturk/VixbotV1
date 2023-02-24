@@ -1,15 +1,22 @@
-const Knex = require('knex');
 const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
 
-const knexConfig = require('../../db/knexfile');
+const User = require('../../models/Users');
 
-const knex = Knex(knexConfig[process.env.NODE_ENV]);
+
+mongoose.connect("mongodb://localhost:27017/vbot", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 async function getUserForLoginData(email, password) {
-  const [user] = await knex('users')
-    .select()
-    .where({ email })
-    .limit(1);
+  console.log('password:', password);
+  console.log('email:', email);
+
+  console.log('User:', User);
+
+
+  const user = await User.findOne({ email });
 
   if (!user) {
     return null;
@@ -22,22 +29,20 @@ async function getUserForLoginData(email, password) {
   }
 
   return {
-    id: user.id,
+    id: user._id,
     username: user.email,
-    created_at: user.created_at,
+    created_at: user.createdAt,
   };
 }
 
 async function getUser(query) {
-  const [user] = await knex('users')
-    .select()
-    .where(query)
-    .limit(1);
+  const user = await User.findOne(query);
+
   return user;
 }
 
 async function getUserById(id) {
-  return getUser({ id });
+  return getUser({ _id: id });
 }
 
 module.exports = {

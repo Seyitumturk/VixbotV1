@@ -1,38 +1,32 @@
 const Joi = require('joi');
-
-const constants = require('../constants');
-
-const { NAME_MIN, NAME_MAX, PASSWORD_MAX, PASSWORD_MIN } = constants;
+const User = require('../../../models/Users');
 
 const schema = Joi.object().keys({
   name: Joi.string()
-    .min(NAME_MIN)
-    .max(NAME_MAX)
+    .min(1)
+    .max(60)
     .required(),
   password: Joi.string()
-    .min(PASSWORD_MIN)
-    .max(PASSWORD_MAX),
-  username: Joi.string().email({ minDomainAtoms: 2 }),
+    .min(6)
+    .max(30),
+  email: Joi.string().email({ minDomainSegments: 2 }),
 });
 
 async function validateRegisterPayload(req, res, next) {
   let payloadValidation;
   try {
-    payloadValidation = await Joi.validate(req.body, schema, { abortEarly: false });
-  } catch (validateRegisterError) {
-    payloadValidation = validateRegisterError;
+    payloadValidation = await schema.validateAsync(req.body, { abortEarly: false });
+  } catch (error) {
+    payloadValidation = error;
   }
-  const { details } = payloadValidation;
+
   let errors;
-  if (details) {
+  if (payloadValidation.details) {
     errors = {};
-    details.forEach(errorDetail => {
-      const {
-        path: [key],
-        type,
-      } = errorDetail;
+    payloadValidation.details.forEach((errorDetail) => {
+      const { path: [key], type } = errorDetail;
       const errorType = type.split('.')[1];
-      errors[key] = constants[`${key.toUpperCase()}_${errorType.toUpperCase()}_ERROR`];
+      errors[key] = User.getValidationErrorMessage(key, errorType);
     });
   }
 
@@ -40,6 +34,7 @@ async function validateRegisterPayload(req, res, next) {
     req.session.messages = { errors };
     return res.status(400).redirect('/register');
   }
+
   return next();
 }
 
