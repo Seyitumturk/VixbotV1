@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    conversations: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Conversations'
+    }],
     created_at: {
         type: Date,
         default: Date.now

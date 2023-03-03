@@ -704,7 +704,10 @@ pre code {
     margin-right: -15px;
     margin-left: -15px;
 
+    padding: 5px;
+
     flex-wrap: wrap;
+
 }
 
 .no-gutters {
@@ -716,6 +719,14 @@ pre code {
 .no-gutters>[class*='col-'] {
     padding-right: 0;
     padding-left: 0;
+}
+
+
+
+
+
+#anan1 {
+    height: 80px;
 }
 
 .col-1,
@@ -762,7 +773,7 @@ pre code {
 .col-md-auto,
 .col-lg-1,
 .col-lg-2,
-.col-lg-3,
+
 .col-lg-4,
 .col-lg-5,
 .col-lg-6,
@@ -794,6 +805,27 @@ pre code {
     min-height: 1px;
     padding-right: 15px;
     padding-left: 15px;
+
+}
+
+.switch-icon {
+    background-image: url(Switch.png);
+    background-size: contain;
+    width: 3px;
+    height: 3px;
+    display: inline-block;
+}
+
+
+
+
+.col-lg-3 {
+    background: linear-gradient(45deg, #5e17eb 0, #00ffff 100%) !important;
+
+    height: 400px;
+    border-radius: 10px;
+    padding: 30px;
+    margin: 3.75rem;
 }
 
 .col {
@@ -4905,13 +4937,14 @@ input[type='button'].btn-block {
 
     display: inline-block;
 
-    width: 300px;
+    width: 200px;
+    height: 100px;
 
-    margin-right: 1rem;
     padding-top: .0625rem;
     padding-bottom: .0625rem;
 
     white-space: nowrap;
+
 }
 
 .navbar-brand:hover,
@@ -14039,9 +14072,13 @@ button.bg-lighter:focus {
     background-color: #cbd3da !important;
 }
 
+/* Change the background colour */
+
 .bg-gradient-primary {
-    background: linear-gradient(87deg, #e77d32 0, #fcb44a 100%) !important;
+    background: linear-gradient(87deg, #2D3C55 0, #fbfff7 100%) !important;
+    animation: animate 15s ease infinite;
 }
+
 
 .bg-gradient-secondary {
     background: linear-gradient(87deg, #f7fafc 0, #f7f8fc 100%) !important;
@@ -14335,8 +14372,24 @@ button.section-darker:focus {
 }
 
 .bg-gradient-primary {
-    background: linear-gradient(87deg, red 0, #fcb44a 100%) !important;
+    background: linear-gradient(45deg, #5e17eb 0, #00ffff 100%) !important;
+    animation: animateGradient 10s ease infinite;
 }
+
+@keyframes animateGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 
 .bg-gradient-secondary {
     background: linear-gradient(87deg, #f7fafc 0, #f7f8fc 100%) !important;
@@ -16822,6 +16875,22 @@ textarea[resize='horizontal'] {
 
 .header {
     position: relative;
+    animation: animate 15s ease infinite;
+
+}
+
+@keyframes animate {
+    0% {
+        background-position: 0 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0 50%;
+    }
 }
 
 .icon {
@@ -17620,7 +17689,9 @@ textarea[resize='horizontal'] {
 .navbar-vertical .navbar-brand-img,
 .navbar-vertical .navbar-brand>img {
     max-width: 100%;
-    max-height: 2rem;
+    height: 1000px;
+
+    width: 20%;
 }
 
 @media (min-width: 768px) {
@@ -20194,4 +20265,90 @@ html:not([dir='rtl']) .noUi-horizontal .noUi-handle {
 #brand-logo-image {
     height: 10vh;
     width: 10vh;
+}
+
+.template-info {
+    color: white;
+}
+
+#pushdown-login {
+    margin-top: 50vh;
+}
+
+.conversation_input {
+    width: 100%;
+    height: 100px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 16px;
+    resize: none;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.gpt_response {
+    color: #d6d5d3;
+
+}
+
+#hover-div {
+    position: relative;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    padding: 10px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 5px;
+    box-shadow: none;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+#hover-div:hover {
+    background: linear-gradient(to right, #5e17eb, #00ffff);
+    /* define the linear gradient */
+    -webkit-background-clip: text;
+    /* set the background-clip property for WebKit browsers */
+    background-clip: text;
+    /* set the background-clip property for other browsers */
+    -webkit-text-fill-color: transparent;
+    /* make the text color transparent for WebKit browsers */
+    color: transparent;
+    /* make the text color transparent for other browsers */
+}
+
+.cursor {
+    display: inline-block;
+    width: 1ch;
+    height: 1em;
+    background-color: transparent;
+    animation: cursor-blink 1s infinite;
+}
+
+@keyframes cursor-blink {
+
+    0%,
+    100% {
+        background-color: transparent;
+    }
+
+    50% {
+        background-color: #000;
+    }
+}
+
+
+#add-product-btn {
+    justify-content: center;
+    text-align: center;
+
+
+}
+
+#add-product-btn-wrapper {
+    text-align: center;
+
+
 }

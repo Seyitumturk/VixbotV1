@@ -22,7 +22,7 @@
 
 'use strict';
 
-var Datepicker = (function() {
+var Datepicker = (function () {
 
 	// Variables
 
@@ -44,7 +44,7 @@ var Datepicker = (function() {
 	// Events
 
 	if ($datepicker.length) {
-		$datepicker.each(function() {
+		$datepicker.each(function () {
 			init($(this));
 		});
 	}
@@ -57,7 +57,7 @@ var Datepicker = (function() {
 
 'use strict';
 
-var CopyIcon = (function() {
+var CopyIcon = (function () {
 
 	// Variables
 
@@ -68,7 +68,7 @@ var CopyIcon = (function() {
 	// Methods
 
 	function init($this) {
-		$this.tooltip().on('mouseleave', function() {
+		$this.tooltip().on('mouseleave', function () {
 			// Explicitly hide tooltip, since after clicking it remains
 			// focused (as it's a button), so tooltip would otherwise
 			// remain visible until focus is moved away
@@ -77,7 +77,7 @@ var CopyIcon = (function() {
 
 		var clipboard = new ClipboardJS($element);
 
-		clipboard.on('success', function(e) {
+		clipboard.on('success', function (e) {
 			$(e.trigger)
 				.attr('title', 'Copied!')
 				.tooltip('_fixTitle')
@@ -103,7 +103,7 @@ var CopyIcon = (function() {
 
 'use strict';
 
-var FormControl = (function() {
+var FormControl = (function () {
 
 	// Variables
 
@@ -113,9 +113,9 @@ var FormControl = (function() {
 	// Methods
 
 	function init($this) {
-		$this.on('focus blur', function(e) {
-        $(this).parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
-    }).trigger('blur');
+		$this.on('focus blur', function (e) {
+			$(this).parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+		}).trigger('blur');
 	}
 
 
@@ -127,54 +127,59 @@ var FormControl = (function() {
 
 })();
 
+
+
+
+
+
 //
 // Google maps
 //
 
 var $map = $('#map-canvas'),
-    map,
-    lat,
-    lng,
-    color = "#5e72e4";
+	map,
+	lat,
+	lng,
+	color = "#5e72e4";
 
 function initMap() {
 
-    map = document.getElementById('map-canvas');
-    lat = map.getAttribute('data-lat');
-    lng = map.getAttribute('data-lng');
+	map = document.getElementById('map-canvas');
+	lat = map.getAttribute('data-lat');
+	lng = map.getAttribute('data-lng');
 
-    var myLatlng = new google.maps.LatLng(lat, lng);
-    var mapOptions = {
-        zoom: 12,
-        scrollwheel: false,
-        center: myLatlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        styles: [{"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#444444"}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2f2f2"}]},{"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"all","stylers":[{"saturation":-100},{"lightness":45}]},{"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"all","stylers":[{"color":color},{"visibility":"on"}]}]
-    }
+	var myLatlng = new google.maps.LatLng(lat, lng);
+	var mapOptions = {
+		zoom: 12,
+		scrollwheel: false,
+		center: myLatlng,
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		styles: [{ "featureType": "administrative", "elementType": "labels.text.fill", "stylers": [{ "color": "#444444" }] }, { "featureType": "landscape", "elementType": "all", "stylers": [{ "color": "#f2f2f2" }] }, { "featureType": "poi", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "road", "elementType": "all", "stylers": [{ "saturation": -100 }, { "lightness": 45 }] }, { "featureType": "road.highway", "elementType": "all", "stylers": [{ "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "transit", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "water", "elementType": "all", "stylers": [{ "color": color }, { "visibility": "on" }] }]
+	}
 
-    map = new google.maps.Map(map, mapOptions);
+	map = new google.maps.Map(map, mapOptions);
 
-    var marker = new google.maps.Marker({
-        position: myLatlng,
-        map: map,
-        animation: google.maps.Animation.DROP,
-        title: 'Hello World!'
-    });
+	var marker = new google.maps.Marker({
+		position: myLatlng,
+		map: map,
+		animation: google.maps.Animation.DROP,
+		title: 'Hello World!'
+	});
 
-    var contentString = '<div class="info-window-content"><h2>Argon Dashboard</h2>' +
-        '<p>A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</p></div>';
+	var contentString = '<div class="info-window-content"><h2>Argon Dashboard</h2>' +
+		'<p>A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</p></div>';
 
-    var infowindow = new google.maps.InfoWindow({
-        content: contentString
-    });
+	var infowindow = new google.maps.InfoWindow({
+		content: contentString
+	});
 
-    google.maps.event.addListener(marker, 'click', function() {
-        infowindow.open(map, marker);
-    });
+	google.maps.event.addListener(marker, 'click', function () {
+		infowindow.open(map, marker);
+	});
 }
 
-if($map.length) {
-    google.maps.event.addDomListener(window, 'load', initMap);
+if ($map.length) {
+	google.maps.event.addDomListener(window, 'load', initMap);
 }
 
 // //
@@ -218,7 +223,7 @@ if($map.length) {
 
 'use strict';
 
-var Navbar = (function() {
+var Navbar = (function () {
 
 	// Variables
 
@@ -232,27 +237,27 @@ var Navbar = (function() {
 		$this.closest($nav).find($collapse).not($this).collapse('hide');
 	}
 
-    function closeDropdown($this) {
-        var $dropdownMenu = $this.find('.dropdown-menu');
+	function closeDropdown($this) {
+		var $dropdownMenu = $this.find('.dropdown-menu');
 
-        $dropdownMenu.addClass('close');
+		$dropdownMenu.addClass('close');
 
-    	setTimeout(function() {
-    		$dropdownMenu.removeClass('close');
-    	}, 200);
+		setTimeout(function () {
+			$dropdownMenu.removeClass('close');
+		}, 200);
 	}
 
 
 	// Events
 
 	$collapse.on({
-		'show.bs.collapse': function() {
+		'show.bs.collapse': function () {
 			accordion($(this));
 		}
 	})
 
 	$dropdown.on({
-		'hide.bs.dropdown': function() {
+		'hide.bs.dropdown': function () {
 			closeDropdown($(this));
 		}
 	})
@@ -265,7 +270,7 @@ var Navbar = (function() {
 //
 
 
-var NavbarCollapse = (function() {
+var NavbarCollapse = (function () {
 
 	// Variables
 
@@ -288,13 +293,13 @@ var NavbarCollapse = (function() {
 
 	if ($collapse.length) {
 		$collapse.on({
-			'hide.bs.collapse': function() {
+			'hide.bs.collapse': function () {
 				hideNavbarCollapse($collapse);
 			}
 		})
 
 		$collapse.on({
-			'hidden.bs.collapse': function() {
+			'hidden.bs.collapse': function () {
 				hiddenNavbarCollapse($collapse);
 			}
 		})
@@ -308,7 +313,7 @@ var NavbarCollapse = (function() {
 
 'use strict';
 
-var noUiSlider = (function() {
+var noUiSlider = (function () {
 
 	// Variables
 
@@ -323,8 +328,8 @@ var noUiSlider = (function() {
 	//
 	// function init($this) {
 	// 	$this.on('focus blur', function(e) {
-  //       $this.parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
-  //   }).trigger('blur');
+	//       $this.parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+	//   }).trigger('blur');
 	// }
 	//
 	//
@@ -337,52 +342,52 @@ var noUiSlider = (function() {
 
 
 	if ($(".input-slider-container")[0]) {
-			$('.input-slider-container').each(function() {
+		$('.input-slider-container').each(function () {
 
-					var slider = $(this).find('.input-slider');
-					var sliderId = slider.attr('id');
-					var minValue = slider.data('range-value-min');
-					var maxValue = slider.data('range-value-max');
+			var slider = $(this).find('.input-slider');
+			var sliderId = slider.attr('id');
+			var minValue = slider.data('range-value-min');
+			var maxValue = slider.data('range-value-max');
 
-					var sliderValue = $(this).find('.range-slider-value');
-					var sliderValueId = sliderValue.attr('id');
-					var startValue = sliderValue.data('range-value-low');
+			var sliderValue = $(this).find('.range-slider-value');
+			var sliderValueId = sliderValue.attr('id');
+			var startValue = sliderValue.data('range-value-low');
 
-					var c = document.getElementById(sliderId),
-							d = document.getElementById(sliderValueId);
+			var c = document.getElementById(sliderId),
+				d = document.getElementById(sliderValueId);
 
-					noUiSlider.create(c, {
-							start: [parseInt(startValue)],
-							connect: [true, false],
-							//step: 1000,
-							range: {
-									'min': [parseInt(minValue)],
-									'max': [parseInt(maxValue)]
-							}
-					});
+			noUiSlider.create(c, {
+				start: [parseInt(startValue)],
+				connect: [true, false],
+				//step: 1000,
+				range: {
+					'min': [parseInt(minValue)],
+					'max': [parseInt(maxValue)]
+				}
+			});
 
-					c.noUiSlider.on('update', function(a, b) {
-							d.textContent = a[b];
-					});
-			})
+			c.noUiSlider.on('update', function (a, b) {
+				d.textContent = a[b];
+			});
+		})
 	}
 
 	if ($("#input-slider-range")[0]) {
-			var c = document.getElementById("input-slider-range"),
-					d = document.getElementById("input-slider-range-value-low"),
-					e = document.getElementById("input-slider-range-value-high"),
-					f = [d, e];
+		var c = document.getElementById("input-slider-range"),
+			d = document.getElementById("input-slider-range-value-low"),
+			e = document.getElementById("input-slider-range-value-high"),
+			f = [d, e];
 
-			noUiSlider.create(c, {
-					start: [parseInt(d.getAttribute('data-range-value-low')), parseInt(e.getAttribute('data-range-value-high'))],
-					connect: !0,
-					range: {
-							min: parseInt(c.getAttribute('data-range-value-min')),
-							max: parseInt(c.getAttribute('data-range-value-max'))
-					}
-			}), c.noUiSlider.on("update", function(a, b) {
-					f[b].textContent = a[b]
-			})
+		noUiSlider.create(c, {
+			start: [parseInt(d.getAttribute('data-range-value-low')), parseInt(e.getAttribute('data-range-value-high'))],
+			connect: !0,
+			range: {
+				min: parseInt(c.getAttribute('data-range-value-min')),
+				max: parseInt(c.getAttribute('data-range-value-max'))
+			}
+		}), c.noUiSlider.on("update", function (a, b) {
+			f[b].textContent = a[b]
+		})
 	}
 
 })();
@@ -393,7 +398,7 @@ var noUiSlider = (function() {
 
 'use strict';
 
-var Popover = (function() {
+var Popover = (function () {
 
 	// Variables
 
@@ -420,7 +425,7 @@ var Popover = (function() {
 	// Events
 
 	if ($popover.length) {
-		$popover.each(function() {
+		$popover.each(function () {
 			init($(this));
 		});
 	}
@@ -433,7 +438,7 @@ var Popover = (function() {
 
 'use strict';
 
-var ScrollTo = (function() {
+var ScrollTo = (function () {
 
 	//
 	// Variables
@@ -448,15 +453,15 @@ var ScrollTo = (function() {
 
 	function scrollTo($this) {
 		var $el = $this.attr('href');
-        var offset = $this.data('scroll-to-offset') ? $this.data('scroll-to-offset') : 0;
+		var offset = $this.data('scroll-to-offset') ? $this.data('scroll-to-offset') : 0;
 		var options = {
 			scrollTop: $($el).offset().top - offset
 		};
 
-        // Animate scroll to the selected section
-        $('html, body').stop(true, true).animate(options, 600);
+		// Animate scroll to the selected section
+		$('html, body').stop(true, true).animate(options, 600);
 
-        event.preventDefault();
+		event.preventDefault();
 	}
 
 
@@ -465,7 +470,7 @@ var ScrollTo = (function() {
 	//
 
 	if ($scrollTo.length) {
-		$scrollTo.on('click', function(event) {
+		$scrollTo.on('click', function (event) {
 			scrollTo($(this));
 		});
 	}
@@ -478,7 +483,7 @@ var ScrollTo = (function() {
 
 'use strict';
 
-var Tooltip = (function() {
+var Tooltip = (function () {
 
 	// Variables
 
@@ -506,7 +511,7 @@ var Tooltip = (function() {
 
 'use strict';
 
-var Charts = (function() {
+var Charts = (function () {
 
 	// Variable
 
@@ -595,7 +600,7 @@ var Charts = (function() {
 						enabled: false,
 						mode: 'index',
 						intersect: false,
-						custom: function(model) {
+						custom: function (model) {
 
 							// Get tooltip
 							var $tooltip = $('#chart-tooltip');
@@ -628,12 +633,12 @@ var Charts = (function() {
 								html += '<div class="arrow"></div>';
 
 								// Add header
-								titleLines.forEach(function(title) {
+								titleLines.forEach(function (title) {
 									html += '<h3 class="popover-header text-center">' + title + '</h3>';
 								});
 
 								// Add body
-								bodyLines.forEach(function(body, i) {
+								bodyLines.forEach(function (body, i) {
 									var colors = model.labelColors[i];
 									var styles = 'background-color: ' + colors.backgroundColor;
 									var indicator = '<span class="badge badge-dot"><i class="bg-primary"></i></span>';
@@ -669,7 +674,7 @@ var Charts = (function() {
 
 						},
 						callbacks: {
-							label: function(item, data) {
+							label: function (item, data) {
 								var label = data.datasets[item.datasetIndex].label || '';
 								var yLabel = item.yLabel;
 								var content = '';
@@ -678,7 +683,7 @@ var Charts = (function() {
 									content += '<span class="badge badge-primary mr-auto">' + label + '</span>';
 								}
 
-								content += '<span class="popover-body-value">' + yLabel + '</span>' ;
+								content += '<span class="popover-body-value">' + yLabel + '</span>';
 								return content;
 							}
 						}
@@ -688,11 +693,11 @@ var Charts = (function() {
 					cutoutPercentage: 83,
 					tooltips: {
 						callbacks: {
-							title: function(item, data) {
+							title: function (item, data) {
 								var title = data.labels[item[0].index];
 								return title;
 							},
-							label: function(item, data) {
+							label: function (item, data) {
 								var value = data.datasets[0].data[item.index];
 								var content = '';
 
@@ -701,11 +706,11 @@ var Charts = (function() {
 							}
 						}
 					},
-					legendCallback: function(chart) {
+					legendCallback: function (chart) {
 						var data = chart.data;
 						var content = '';
 
-						data.labels.forEach(function(label, index) {
+						data.labels.forEach(function (label, index) {
 							var bgColor = data.datasets[0].backgroundColor[index];
 
 							content += '<span class="chart-legend-item">';
@@ -737,7 +742,7 @@ var Charts = (function() {
 			ticks: {
 				beginAtZero: true,
 				padding: 10,
-				callback: function(value) {
+				callback: function (value) {
 					if (!(value % 10)) {
 						return value
 					}
@@ -777,7 +782,7 @@ var Charts = (function() {
 	function pushOptions(parent, options) {
 		for (var item in options) {
 			if (Array.isArray(options[item])) {
-				options[item].forEach(function(data) {
+				options[item].forEach(function (data) {
 					parent[item].push(data);
 				});
 			} else {
@@ -790,7 +795,7 @@ var Charts = (function() {
 	function popOptions(parent, options) {
 		for (var item in options) {
 			if (Array.isArray(options[item])) {
-				options[item].forEach(function(data) {
+				options[item].forEach(function (data) {
 					parent[item].pop();
 				});
 			} else {
@@ -846,14 +851,14 @@ var Charts = (function() {
 			var suffix = elem.data('suffix') ? elem.data('suffix') : '';
 
 			// Update ticks
-			$chart.options.scales.yAxes[0].ticks.callback = function(value) {
+			$chart.options.scales.yAxes[0].ticks.callback = function (value) {
 				if (!(value % 10)) {
 					return prefix + value + suffix;
 				}
 			}
 
 			// Update tooltips
-			$chart.options.tooltips.callbacks.label = function(item, data) {
+			$chart.options.tooltips.callbacks.label = function (item, data) {
 				var label = data.datasets[item.datasetIndex].label || '';
 				var yLabel = item.yLabel;
 				var content = '';
@@ -879,14 +884,14 @@ var Charts = (function() {
 
 	// Toggle options
 	$toggle.on({
-		'change': function() {
+		'change': function () {
 			var $this = $(this);
 
 			if ($this.is('[data-add]')) {
 				toggleOptions($this);
 			}
 		},
-		'click': function() {
+		'click': function () {
 			var $this = $(this);
 
 			if ($this.is('[data-update]')) {
@@ -910,7 +915,7 @@ var Charts = (function() {
 // Orders chart
 //
 
-var OrdersChart = (function() {
+var OrdersChart = (function () {
 
 	//
 	// Variables
@@ -934,7 +939,7 @@ var OrdersChart = (function() {
 				scales: {
 					yAxes: [{
 						ticks: {
-							callback: function(value) {
+							callback: function (value) {
 								if (!(value % 10)) {
 									//return '$' + value + 'k'
 									return value
@@ -945,7 +950,7 @@ var OrdersChart = (function() {
 				},
 				tooltips: {
 					callbacks: {
-						label: function(item, data) {
+						label: function (item, data) {
 							var label = data.datasets[item.datasetIndex].label || '';
 							var yLabel = item.yLabel;
 							var content = '';
@@ -955,7 +960,7 @@ var OrdersChart = (function() {
 							}
 
 							content += '<span class="popover-body-value">' + yLabel + '</span>';
-							
+
 							return content;
 						}
 					}
@@ -992,7 +997,7 @@ var OrdersChart = (function() {
 // Sales chart
 //
 
-var SalesChart = (function() {
+var SalesChart = (function () {
 
 	// Variables
 
@@ -1013,7 +1018,7 @@ var SalesChart = (function() {
 							zeroLineColor: Charts.colors.gray[900]
 						},
 						ticks: {
-							callback: function(value) {
+							callback: function (value) {
 								if (!(value % 10)) {
 									return '$' + value + 'k';
 								}
@@ -1023,7 +1028,7 @@ var SalesChart = (function() {
 				},
 				tooltips: {
 					callbacks: {
-						label: function(item, data) {
+						label: function (item, data) {
 							var label = data.datasets[item.datasetIndex].label || '';
 							var yLabel = item.yLabel;
 							var content = '';
@@ -1061,3 +1066,7 @@ var SalesChart = (function() {
 	}
 
 })();
+
+// Additions 
+
+``
