@@ -7,39 +7,16 @@ const templatesSchema = new mongoose.Schema({
     },
     template_name: {
         type: String,
-        required: true,
         trim: true
     },
-    main_features: {
+    template_context: {
         type: String,
-        required: true,
         trim: true
-
     },
-    unique_selling_points: {
+    template_functionality: {
         type: String,
-        required: true,
         trim: true
     },
-
-    pricing_model: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    distrubition_channels: {
-        type: String,
-        required: true,
-        trim: true
-    },
-
-    gpt_template_summary: {
-        type: String,
-        required: true,
-        trim: true
-    },
-
-
     created_at: {
         type: Date,
         default: Date.now

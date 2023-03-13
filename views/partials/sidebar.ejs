@@ -1,4 +1,4 @@
-<nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main">
+<nav id="vb-nav" class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main">
   <div class="container-fluid">
     <!-- Toggler -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidenav-collapse-main"
@@ -6,9 +6,9 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <!-- Brand -->
-    <a class="navbar-brand pt-0" href="/">
-      <img src="img/brand/blue.png" class=" navbar-brand-img" alt="...">
-    </a>
+
+    <img id="nav-vblogo" src="img/brand/blue.png" class=" navbar-brand-img" alt="..." style="height: 50px;">
+
     <!-- User -->
     <ul class="nav align-items-center d-md-none">
       <li class="nav-item dropdown">
@@ -70,10 +70,19 @@
       <!-- Navigation -->
       <ul class="navbar-nav">
 
+        <li id="nav-item dropdown" class="nav-item dropdown">
+          <a id="hover-div-choosebuss" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="ni ni-single-02 text-blue"></i> Company
+          </a>
+          <div class="dropdown-menu dropdown-menu-right p-0">
+            <!-- Business items -->
+          </div>
+        </li>
 
         <li class="nav-item">
           <a id="hover-div" class="nav-link" href="/conversations">
-            <i class="ni ni-bullet-list-67 text-red"></i> Conversations
+            <i class="ni ni-bulb-61 text-grey"></i> Ideas
           </a>
         </li>
 
@@ -81,27 +90,22 @@
 
         <li class="nav-item">
           <a id="hover-div" class="nav-link" href="/products">
-            <i class="ni ni-planet text-red"></i> Products
+            <i class="ni ni-box-2 text-grey"></i> Products
           </a>
         </li>
         <li class="nav-item">
           <a id="hover-div" class="nav-link" href="/templates">
-            <i class="ni ni-planet text-blue"></i> Templates
+            <i class="ni ni-books text-grey"></i> Templates
           </a>
         </li>
 
 
         <li class="nav-item">
           <a id="hover-div" class="nav-link" href="/">
-            <i class="ni ni-tv-2 text-primary"></i> Dashboard
+            <i class="ni ni-app text-primary"></i> Dashboard
           </a>
         </li>
 
-        <li class="nav-item">
-          <a id="hover-div" class="nav-link" href="/profile">
-            <i class="ni ni-single-02 text-yellow"></i> Business profile
-          </a>
-        </li>
 
         <!-- Divider -->
         <hr class="my-3">
@@ -113,9 +117,16 @@
         </li>
         <li id="pushdown-Register" class="nav-item">
           <a id="hover-div" class="nav-link" href="#">
-            <i class="ni ni-circle-08 text-pink"></i> Register
+            <i class="ni ni-circle-08 text-grey"></i> Register
           </a>
         </li>
+
+        <li class="nav-item">
+          <a id="hover-div" class="nav-link" href="/profile">
+            <i class="ni ni-single-02 text-grey"></i> Business profile
+          </a>
+        </li>
+
       </ul>
     </div>
   </div>

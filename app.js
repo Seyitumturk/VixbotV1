@@ -11,9 +11,9 @@ const mongoose = require('mongoose');
 
 const initAuthMiddleware = require('./features/login/init-auth-middleware');
 const indexRouter = require('./routes/index');
-const mongoURI = 'mongodb://localhost:27017/vixbot';
+const mongoURI = 'mongodb://localhost:27017/vbot';
 
-mongoose.connect('mongodb://localhost:27017/vbot', {
+mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => {
@@ -70,5 +70,6 @@ app.use('/', indexRouter);
 app.use((req, res) => {
   res.status(404).render('pages/404');
 });
+
 
 module.exports = app;
