@@ -4,160 +4,113 @@
         <!-- Main content -->
         <div class="main-content">
             <!-- Top navbar -->
-            <% include ../partials/navbar %>
-                <!-- Header -->
-                <% include ../partials/header %>
-                    <!-- Page content -->
-                    <div class="container-fluid mt--7">
-                        <div id="row-fullwidth" class="row">
-                            <div class="col-xl-8 mb-5 mb-xl-0">
-                                <!-- Chatbox -->
-                                <div class="card bg-gradient-white">
-                                    <div id="convo-box" class="card-header bg-gradient">
-                                        <div class="form-container">
-                                            <form id="conversation-form" utocomplete="off" class="conversation-form">
-                                                <input type="text" name="text" placeholder="Type your message here...">
-                                                <button type="submit" class="generate-btn">Generate</button>
-                                            </form>
+            <% include ../partials/header %>
+                <!-- Page content -->
+                <div class="container-fluid mt--7">
+                    <!-- Table -->
+                    <div class="row">
+                        <div class="col">
+                            <div class="card shadow">
+                                <div class="card-header bg-transparent">
+                                    <div class="expandable-btn-container">
+                                        <button id="expand-btn" class="expand-btn">Options</button>
+                                    </div>
+                                    <div id="hidden-menus" class="hidden-menus">
+                                        <div class="role-options">
+                                            <button class="role-btn" data-role="Sales Vix">Sales Vix</button>
+                                            <button class="role-btn" data-role="Technical Vix">Technical Vix</button>
+                                            <button class="role-btn" data-role="Co-founder Vix">Co-founder Vix</button>
                                         </div>
-
-                                        <div class="menu-items">
-
-                                            <div class="convoHeader-list-item">
-
-                                                <h2 class="text-uppercase white ls-1 mb-1">Actionize</h2>
-                                                <h6 id="selected-template" class="text-black mb-0">
-                                                    <span id="selected-product">Weekly</span>
-                                                </h6>
-
-                                            </div>
-                                            <div class="convoHeader-list-item">
-                                                <h2 class="text-uppercase white ls-1 mb-1">Cursor</h2>
-                                                <h6 id="selected-template" class="text-black mb-0">
-                                                    <span id="selected-product">Explain</span>
-                                                </h6>
-                                            </div>
-
-                                            <div class="convoHeader-list-item">
-                                                <h2 class="text-uppercase light ls-1 mb-1">Cursor</h2>
-                                                <h6 id="selected-template" class="text-black mb-0">
-                                                    <span id="selected-product">Explain</span>
-                                                </h6>
-                                            </div>
-                                            <div class="convoHeader-list-item">
-                                                <h2 class="text-uppercase white ls-1 mb-1">Cursor</h2>
-                                                <h6 id="selected-template" class="text-black mb-0">
-                                                    <span id="selected-product">Explain</span>
-                                                </h6>
-                                            </div>
+                                        <div class="cursor-options">
+                                            <button class="cursor-btn" data-cursor="Expand">Expand</button>
+                                            <button class="cursor-btn" data-cursor="Explain">Explain</button>
+                                            <button class="cursor-btn" data-cursor="Summarize">Summarize</button>
                                         </div>
                                     </div>
-                                    <div class="card-body">
-                                        <!-- Conversation history -->
-
-                                        <div class="example-section">
-                                            <div class="example-prompt">
-                                                <div class="prompt-content">
-                                                    <div class="prompt-answer">Prompt 1 answer</div>
-                                                    <div class="prompt-text">Prompt 1 text</div>
-                                                </div>
-                                            </div>
-                                            <div class="example-prompt">
-                                                <div class="prompt-content">
-                                                    <div class="prompt-answer">Prompt 2 answer</div>
-                                                    <div class="prompt-text">Prompt 2 text</div>
-                                                </div>
-                                            </div>
-                                            <div class="example-prompt">
-                                                <div class="prompt-content">
-                                                    <div class="prompt-answer">Prompt 3 answer</div>
-                                                    <div class="prompt-text">Prompt 3 text</div>
-                                                </div>
-                                            </div>
-                                            <!-- More prompts and answers go here -->
-                                        </div>
-
-
-                                        <!-- Conversation form -->
-
+                                    <div class="form-container">
+                                        <form id="conversation-form" autocomplete="off" class="conversation-form">
+                                            <input type="text" name="text" placeholder="Type your message here...">
+                                            <button type="submit" class="generate-btn"> Generate</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div id="card-body-extend" class="card-body">
+                                    <div class="responses-container" id="responses-container">
+                                        <!-- Response cards go here -->
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- Footer -->
-                        <% include ../partials/footer %>
                     </div>
+                    <script>
+                        document.getElementById('expand-btn').addEventListener('click', function () {
+                            this.classList.toggle('expanded');
+                            document.getElementById('hidden-menus').classList.toggle('expanded');
+                        });
+
+                        const roleBtns = document.querySelectorAll(".role-btn");
+                        const cursorBtns = document.querySelectorAll(".cursor-btn");
+
+                        let selectedRole = "A senior executive at the company that is brainstorming on improving this product.";
+                        let selectedCursor = null;
+
+                        roleBtns.forEach((btn) => {
+                            btn.addEventListener("click", () => {
+                                selectedRole = btn.getAttribute("data-role");
+                            });
+                        });
+
+                        cursorBtns.forEach((btn) => {
+                            btn.addEventListener("click", () => {
+                                selectedCursor = btn.getAttribute("data-cursor");
+                            });
+                        });
+
+                        const conversationForm = document.querySelector("#conversation-form");
+                        const responseContainer = document.querySelector(".responses-container");
+
+                        conversationForm.addEventListener("submit", (event) => {
+                            event.preventDefault(); // Prevent default form submission behavior
+
+                            const userMessage = event.target.elements.text.value;
+                            event.target.elements.text.value = ""; // Clear input text
+
+                            const xhr = new XMLHttpRequest();
+                            xhr.open("POST", "/conversations", true);
+                            xhr.setRequestHeader("Content-Type", "application/json");
+
+                            xhr.onload = () => {
+                                if (xhr.status === 200) {
+                                    const response = JSON.parse(xhr.responseText).response;
+                                    addToConversationHistory(userMessage, response);
+                                }
+                            };
+
+                            xhr.send(JSON.stringify({
+                                text: userMessage,
+                                role: selectedRole,
+                                cursor: selectedCursor,
+                            }));
+                        });
+
+                        function addToConversationHistory(userMessage, botMessage) {
+                            const responseRow = document.createElement("div");
+                            responseRow.classList.add("response-row");
+
+                            const responseCard = document.createElement("div");
+                            responseCard.classList.add("response-card");
+                            responseCard.classList.add("large");
+                            responseCard.innerHTML = `<p class="response-text">User: ${userMessage}<br>Assistant: ${botMessage}</p>`;
+                            responseContainer.prepend(responseRow);
+                            responseRow.appendChild(responseCard);
+                        }
+                    </script>
+                    <!-- Footer -->
+                    <% include ../partials/footer %>
+                </div>
         </div>
-
-
         <!-- Include scripts -->
         <% include ../partials/scripts %>
-
-            <script>
-                const conversationHistory = document.querySelector(".conversation-history");
-                const conversationForm = document.querySelector("#conversation-form");
-
-                conversationForm.addEventListener("submit", (event) => {
-                    event.preventDefault(); // Prevent default form submission behavior
-
-                    const userMessage = event.target.elements.text.value;
-                    event.target.elements.text.value = ""; // Clear input text
-
-                    const xhr = new XMLHttpRequest();
-                    xhr.open("POST", "/conversations", true);
-                    xhr.setRequestHeader("Content-Type", "application/json");
-
-                    xhr.onload = () => {
-                        if (xhr.status === 200) {
-                            const response = JSON.parse(xhr.responseText).response;
-                            addToConversationHistory(userMessage, response);
-                        }
-                    };
-
-                    xhr.send(JSON.stringify({
-                        text: userMessage,
-                    }));
-                });
-
-                function addToConversationHistory(userMessage, botMessage) {
-                    // Create a new .example-prompt card
-                    const examplePrompt = document.createElement("div");
-                    examplePrompt.classList.add("example-prompt");
-
-                    // Create the prompt content
-                    const promptContent = document.createElement("div");
-                    promptContent.classList.add("prompt-content");
-
-                    // Create the prompt answer
-                    const promptAnswer = document.createElement("div");
-                    promptAnswer.classList.add("prompt-answer");
-                    promptAnswer.textContent = botMessage;
-
-                    // Create the prompt text
-                    const promptText = document.createElement("div");
-                    promptText.classList.add("prompt-text");
-                    promptText.textContent = userMessage;
-
-                    // Add the prompt answer and prompt text to the prompt content
-                    promptContent.appendChild(promptAnswer);
-                    promptContent.appendChild(promptText);
-
-                    // Add the prompt content to the example-prompt card
-                    examplePrompt.appendChild(promptContent);
-
-                    // Add the example-prompt card to the example-section div
-                    const exampleSection = document.querySelector(".example-section");
-                    exampleSection.appendChild(examplePrompt);
-
-                    // Check if the scrollbar is at the bottom before adding new content
-                    const isScrolledToBottom = exampleSection.scrollHeight - exampleSection.clientHeight <= exampleSection.scrollTop + 1;
-
-                    // Scroll to the bottom of the example-section div
-                    if (isScrolledToBottom) {
-                        exampleSection.scrollTop = exampleSection.scrollHeight - exampleSection.clientHeight;
-                    }
-                }
-
-
-            </script>
 </body>
+
+</html>

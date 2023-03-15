@@ -22,7 +22,7 @@ async function redirectToDashboard(req, res) {
   req.session.userInfo = { ...userInfo };
   console.log(req.session);
 
-  return res.redirect('/');
+  return res.redirect('/conversations');
 }
 
 module.exports = redirectToDashboard;

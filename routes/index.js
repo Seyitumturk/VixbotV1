@@ -1,8 +1,8 @@
-// Require dependecies 
+// Require dependecies
 const express = require('express');
 const router = express.Router();
+
 const axios = require('axios');
-const cheerio = require('cheerio');
 
 const Product = require('../models/Products');
 const Template = require('../models/Templates');
@@ -48,16 +48,6 @@ router.get('/maps', isAuthenticated, (req, res) => {  // Render maps page if use
 router.get('/tables', isAuthenticated, (req, res) => {  // Render tables page if user is logged in
   res.render('pages/tables');
 });
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -115,101 +105,61 @@ router.post('/create-product', isAuthenticated, async (req, res) => {
     }
   }
 });
-
+//});, Now help me achieve following with code, : when i click on the export to word button it will display a menu of other export options like pdf, and 3 more that you suggest, the menu will expand at the bottom of the prompt container, and user can toggle on off and choose from it, for now just implement this with appropriate icons for your export suggestions. And also one thing I want you to fix is , when the bot response is written in the prompt container box, it appears on top of the export icon/menu, and I want to display the text inside another div inside the prompt content card and want that div to have a header div and body div and store the text content in there and scroll just that div and keep the menu/export to word icon at the bottom static. Help me achieve this please, by adjusting my code. 
 
 router.post('/conversations', isAuthenticated, async (req, res) => {
 
   const { Configuration, OpenAIApi } = require("openai");
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: "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",
   });
   const openai = new OpenAIApi(configuration);
 
-  const text = req.body.text; // Get the text from the request body
+  const text = req.body.text;
 
-  // below code is to be completed to add product dynamically. 
-  try {
-    const productId = "64025c241817cecb3f9b6fb1"; // Replace with the actual ID of the product you want to retrieve
-
-    const product = await Product.findOne({ _id: productId }); // Replace `productId` with the ID of the product you want to retrieve
-
-    const productDetails = `Here is the information I save when my users create a new product: Product Name: ${product.product_name}\nMain Features: ${product.main_features}\nUnique Selling Points: ${product.unique_selling_points}\nPricing Model: ${product.pricing_model}\nDistribution Channels: ${product.distribution_channels}`;
-
-    console.log(productDetails)
+  const productId = "6410cf5dbcedb3bf3b42ec07"; // Replace with the actual ID of the product you want to retrieve dynamically.
+  const product = await Product.findOne({ _id: productId });
+  const productDetails = `Here is the information I save when my users create a new product: Product Name: ${product.product_name}\nMain Features: ${product.main_features}\nUnique Selling Points: ${product.unique_selling_points}\nPricing Model: ${product.pricing_model}\nDistribution Channels: ${product.distribution_channels}`;
+  const tone = "Professional"
+  const role = "A senior exectuive at the company that is brainstorming on improving this product."
+  const optimizeFor = "Giving stunningly good product improvement suggestions, and overall sucess of the product at hand."
 
 
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  const promptBody = `${productDetails}. Take the following details to context, don't take it as the my question:  Optimize for ${optimizeFor}, Reply in the tone of: ${tone}, When answering consider your role as: ${role},  At the end of each prompt say done.  Now answer my following questions and requests about this product using the context. Here is the question: ${text}.`
 
-  }
+  console.log(promptBody)
 
-  // OPEN AI COMPLETION
 
-  const completion = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt: text,
-    temperature: 0.9,
-    max_tokens: 1024,
-  });
-  const responsePrint = completion.data.choices[0].text;
-
-  res.json({ response: completion.data.choices[0].text });
-
-  console.log(responsePrint);
+  const apiKeyy = "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";
+  const endpointUrl = 'https://api.openai.com/v1/chat/completions';
 
 
 
-  // Main conversation box. 
+  const requestBody = {
 
-  // TODO: Implement space-remover for prompt token efficiency
+    "model": "gpt-3.5-turbo",
+    "messages": [{ "role": "user", "content": `${promptBody}` }],
+  };
 
-  // PROMPT TRICKS - GOLDEN RULE -- BE SPECIFIC 
+  const requestHeaders = {
 
-  // Simple go here for haacks: https://learnwithhasan.com/prompt-engineering-guide/
+    'Content-Type': 'application/json',
+    'Authorization': ` Bearer ${apiKeyy}`
+  };
 
-  // The second thing we see in this example is (explain step by step)
-
-  // These words are very important. And it is called the Zero Chain of thought.
-
-  // We force the LLM to think and explain step by step. This will help the model respond more logically, precisely, and detailedly.
-
-  // Example 5: Generate Tables and Data
-  // Did you know that ChatGPT can respond with Data and Tables ?
-
-  //   Try this prompt:
-
-  // generate mock data showing google serp results, I want to see the following fields: Title, Link, DA, PA, Title Length.and make to show them in a table
-  // And here is the output:
-
-  // Role( Increases answer quailty): Ignore all previous instructions before this one. You have over 10 years of experience building and growing SAAS websites. Your task now is to help me start and grow a new SAAS. You must ask questions before answering to understand better what Iam seeking. And you must explain everything step by step. Is that understood?
-
-
-
+  axios.post(endpointUrl, requestBody, { headers: requestHeaders })
+    .then(response => {
+      const botMessage = response.data.choices[0].message.content;
+      console.log(botMessage)
+      res.status(200).json({ response: botMessage });
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).json({ error: error });
+    });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //Product Route
-
 
 router.get('/products', isAuthenticated, async (req, res) => {
   try {
@@ -221,15 +171,11 @@ router.get('/products', isAuthenticated, async (req, res) => {
   }
 });
 
-
-
 //Template Route
 
 router.get('/templates', isAuthenticated, (req, res) => {  // Render maps page if user is logged in
   res.render('pages/templates');
 });
-
-
 router.post('/create-template', isAuthenticated, async (req, res) => {
   try {
     const templateData = req.body;
@@ -270,15 +216,7 @@ router.post('/create-template', isAuthenticated, async (req, res) => {
   }
 });
 
-
-
-
-
-
-
-//Routes to get data into header 
-
-
+//Routes to get data into header - this could be changed to.
 
 router.post('/header-data', isAuthenticated, async (req, res) => {
   try {
@@ -288,11 +226,6 @@ router.post('/header-data', isAuthenticated, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-
-
-
-
 
 
 // Mount register, login, logout, reset password & profile routes
