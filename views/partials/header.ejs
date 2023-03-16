@@ -12,16 +12,16 @@
                   <span class="h5 font-weight-bold mb-0" id="selected-product"></span>
 
                   <!-- Dropdown starts here -->
+                  <!-- Add this inside the first card, under the "selected-product" span element -->
                   <div class="dropdown">
-
-
-                    <span id="selected-product" class="text-dark ml-2">Choosen product</span>
-
-
-
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="productDropdown"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Choose Product
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="productDropdown" id="productMenu">
+                      <!-- Product list will be populated here -->
+                    </div>
                   </div>
-
-
 
                 </div>
                 <div class="col-auto">

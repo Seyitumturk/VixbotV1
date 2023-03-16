@@ -16,7 +16,7 @@ const mountProfileRoutes = require('../features/profile/routes');
 
 const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
-  apiKey: "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",
+  apiKey: "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",
 });
 const openai = new OpenAIApi(configuration);
 
@@ -65,6 +65,17 @@ router.get('/conversations', isAuthenticated, async (req, res) => {
   }
 });
 
+//Product Route generic
+
+router.get('/products', isAuthenticated, async (req, res) => {
+  try {
+    const products = await Product.find({ user_id: req.user._id });
+    res.render('pages/products', { products: products });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to retrieve products' });
+  }
+});
 
 router.post('/create-product', isAuthenticated, async (req, res) => {
   try {
@@ -105,20 +116,55 @@ router.post('/create-product', isAuthenticated, async (req, res) => {
     }
   }
 });
-//});, Now help me achieve following with code, : when i click on the export to word button it will display a menu of other export options like pdf, and 3 more that you suggest, the menu will expand at the bottom of the prompt container, and user can toggle on off and choose from it, for now just implement this with appropriate icons for your export suggestions. And also one thing I want you to fix is , when the bot response is written in the prompt container box, it appears on top of the export icon/menu, and I want to display the text inside another div inside the prompt content card and want that div to have a header div and body div and store the text content in there and scroll just that div and keep the menu/export to word icon at the bottom static. Help me achieve this please, by adjusting my code. 
+
+// Route to get products for convesations endpoint 
+
+router.get('/get_products', isAuthenticated, async (req, res) => {
+  const products = await Product.find({});
+  res.json(products);
+});
+
+router.post('/set_selected_product', isAuthenticated, async (req, res) => {
+  try {
+    const productId = req.body.productId;
+    req.session.selectedProductId = productId;
+    res.status(200).json({ message: 'Product ID updated' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to set selected product ID' });
+  }
+});
+
+
+
 
 router.post('/conversations', isAuthenticated, async (req, res) => {
 
   const { Configuration, OpenAIApi } = require("openai");
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: "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",
   });
   const openai = new OpenAIApi(configuration);
 
   const text = req.body.text;
 
-  const productId = "6410cf5dbcedb3bf3b42ec07"; // Replace with the actual ID of the product you want to retrieve dynamically.
+  // Replace the productId line with the following code
+  const productId = req.session.selectedProductId;
+  console.log(productId)
   const product = await Product.findOne({ _id: productId });
+
+
+
+  // Replace the productId line with the following code
+  const templateId = req.session.selectedTemplateId;
+  console.log(productId)
+  const template = await Product.findOne({ _id: templateId });
+
+
+
+
+
+
   const productDetails = `Here is the information I save when my users create a new product: Product Name: ${product.product_name}\nMain Features: ${product.main_features}\nUnique Selling Points: ${product.unique_selling_points}\nPricing Model: ${product.pricing_model}\nDistribution Channels: ${product.distribution_channels}`;
   const tone = "Professional"
   const role = "A senior exectuive at the company that is brainstorming on improving this product."
@@ -130,7 +176,7 @@ router.post('/conversations', isAuthenticated, async (req, res) => {
   console.log(promptBody)
 
 
-  const apiKeyy = "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";
+  const apiKeyy = "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";
   const endpointUrl = 'https://api.openai.com/v1/chat/completions';
 
 
@@ -159,17 +205,16 @@ router.post('/conversations', isAuthenticated, async (req, res) => {
     });
 });
 
-//Product Route
 
-router.get('/products', isAuthenticated, async (req, res) => {
-  try {
-    const products = await Product.find({ user_id: req.user._id });
-    res.render('pages/products', { products: products });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to retrieve products' });
-  }
-});
+
+
+
+
+
+
+
+
+
 
 //Template Route
 
@@ -218,14 +263,6 @@ router.post('/create-template', isAuthenticated, async (req, res) => {
 
 //Routes to get data into header - this could be changed to.
 
-router.post('/header-data', isAuthenticated, async (req, res) => {
-  try {
-    const products = await Product.find({ user_id: req.user._id });
-    res.render('partials/header-data', { products });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
 
 
 // Mount register, login, logout, reset password & profile routes

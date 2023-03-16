@@ -69,28 +69,32 @@
                         const conversationForm = document.querySelector("#conversation-form");
                         const responseContainer = document.querySelector(".responses-container");
 
-                        conversationForm.addEventListener("submit", (event) => {
+                        conversationForm.addEventListener("submit", async (event) => {
                             event.preventDefault(); // Prevent default form submission behavior
 
                             const userMessage = event.target.elements.text.value;
                             event.target.elements.text.value = ""; // Clear input text
 
-                            const xhr = new XMLHttpRequest();
-                            xhr.open("POST", "/conversations", true);
-                            xhr.setRequestHeader("Content-Type", "application/json");
+                            // Get the productId from sessionStorage
+                            const productId = sessionStorage.getItem('selectedProductId');
 
-                            xhr.onload = () => {
-                                if (xhr.status === 200) {
-                                    const response = JSON.parse(xhr.responseText).response;
-                                    addToConversationHistory(userMessage, response);
-                                }
-                            };
+                            const response = await fetch('/conversations', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    text: userMessage,
+                                    role: selectedRole,
+                                    cursor: selectedCursor,
+                                    productId
+                                }),
+                            });
 
-                            xhr.send(JSON.stringify({
-                                text: userMessage,
-                                role: selectedRole,
-                                cursor: selectedCursor,
-                            }));
+                            const data = await response.json();
+                            if (response.status === 200) {
+                                addToConversationHistory(userMessage, data.response);
+                            }
                         });
 
                         function addToConversationHistory(userMessage, botMessage) {
@@ -105,6 +109,41 @@
                             responseRow.appendChild(responseCard);
                         }
                     </script>
+
+                    <script>
+                        // Fetch products and populate the dropdown menu
+                        fetch('/get_products')
+                            .then(response => response.json())
+                            .then(products => {
+                                const productMenu = document.getElementById('productMenu');
+                                products.forEach(product => {
+                                    const menuItem = document.createElement('a');
+                                    menuItem.classList.add('dropdown-item');
+                                    menuItem.setAttribute('data-id', product._id);
+                                    menuItem.textContent = product.product_name;
+                                    productMenu.appendChild(menuItem);
+                                });
+                            });
+
+                        // Add event listener to update the productId when a product is selected
+                        document.getElementById('productMenu').addEventListener('click', (event) => {
+                            const selectedProduct = event.target;
+                            const productId = selectedProduct.getAttribute('data-id');
+                            const productName = selectedProduct.textContent;
+
+                            // Update the selected product name on the page
+                            document.getElementById('selected-product').textContent = productName;
+
+                            // Send the productId to the server
+                            const xhr = new XMLHttpRequest();
+                            xhr.open('POST', '/set_selected_product', true);
+                            xhr.setRequestHeader('Content-Type', 'application/json');
+                            xhr.send(JSON.stringify({ productId: productId }));
+                        });
+
+
+                    </script>
+
                     <!-- Footer -->
                     <% include ../partials/footer %>
                 </div>
