@@ -142,6 +142,38 @@
                         });
 
 
+                        // Fetch templates and populate the dropdown menu
+                        fetch('/get_templates')
+                            .then(response => response.json())
+                            .then(templates => {
+                                const templateMenu = document.getElementById('templateMenu');
+                                templates.forEach(template => {
+                                    const menuItem = document.createElement('a');
+                                    menuItem.classList.add('dropdown-item');
+                                    menuItem.setAttribute('data-id', template._id);
+                                    menuItem.textContent = template.template_name;
+                                    templateMenu.appendChild(menuItem);
+                                });
+                            });
+
+
+                        // Add event listener to update the templateId when a template is selected
+                        document.getElementById('templateMenu').addEventListener('click', (event) => {
+                            const selectedTemplate = event.target;
+                            const templateId = selectedTemplate.getAttribute('data-id');
+                            const templateName = selectedTemplate.textContent;
+
+                            // Update the selected template name on the page
+                            document.getElementById('selected-template').textContent = templateName;
+
+                            // Send the templateId to the server
+                            const xhr = new XMLHttpRequest();
+                            xhr.open('POST', '/set_selected_template', true);
+                            xhr.setRequestHeader('Content-Type', 'application/json');
+                            xhr.send(JSON.stringify({ templateId: templateId }));
+                        });
+
+
                     </script>
 
                     <!-- Footer -->

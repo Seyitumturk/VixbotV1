@@ -7,12 +7,13 @@
           <div class="card card-stats mb-4 mb-xl-0">
             <div class="card-body">
               <div class="row">
+
                 <div class="col">
+
                   <h2 class="card-title text-uppercase text-muted mb-0">Selected Product </h2>
                   <span class="h5 font-weight-bold mb-0" id="selected-product"></span>
 
                   <!-- Dropdown starts here -->
-                  <!-- Add this inside the first card, under the "selected-product" span element -->
                   <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="productDropdown"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -41,9 +42,21 @@
           <div class="card card-stats mb-4 mb-xl-0">
             <div class="card-body">
               <div class="row">
+
                 <div class="col">
                   <h2 class="card-title text-uppercase text-muted mb-0">Selected Template </h2>
                   <span class="h5 font-weight-bold mb-0">Competitor Analysis</span>
+
+                  <div class="dropdown">
+                    <button id="templateMenuButton" class="btn btn-secondary dropdown-toggle" type="button"
+                      data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span id="selected-template">Select Template</span>
+                    </button>
+                    <div id="templateMenu" class="dropdown-menu" aria-labelledby="templateMenuButton">
+                      <!-- Template menu items will be added here -->
+                    </div>
+                  </div>
+
                 </div>
                 <div class="col-auto">
                   <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
@@ -55,9 +68,27 @@
                 <span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> 3.48%</span>
                 <span class="text-nowrap">Token Use</span>
               </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="col-xl-3 col-lg-6">
+          <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <!-- Add your image here -->
+                  <img src="/public/img/brand/blue.png" alt="">
+                </div>
+              </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>

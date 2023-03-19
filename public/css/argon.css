@@ -14379,7 +14379,7 @@ button.section-darker:focus {
 }
 
 .bg-gradient-primary {
-    background: linear-gradient(45deg, #9e47ad 0, #00ffff 100%) !important;
+    background: linear-gradient(95deg, #9e47ad 0, #00ffff 170%) !important;
 }
 
 .bg-gradient-primary-reverse {
@@ -20944,15 +20944,6 @@ nav {
     gap: 10px;
 }
 
-.response-card {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    transition: all 0.3s ease;
-    text-align: left;
-}
 
 .response-card:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -20983,7 +20974,7 @@ nav {
 }
 
 .response-card {
-    background: linear-gradient(45deg, #9e47ad 0, #00ffff 100%) !important;
+    background: linear-gradient(45deg, #9e47ad 0, #00ffff 190%) !important;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -21017,7 +21008,7 @@ nav {
 }
 
 .glass {
-    background: linear-gradient(45deg, #9e47ad 0, #00ffff 100%);
+    background: linear-gradient(45deg, #9e47ad 0, #00ffff 170%);
     position: relative;
     overflow: hidden;
 }

@@ -16,7 +16,7 @@ const mountProfileRoutes = require('../features/profile/routes');
 
 const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
-  apiKey: "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",
+  apiKey: "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",
 });
 const openai = new OpenAIApi(configuration);
 
@@ -142,7 +142,7 @@ router.post('/conversations', isAuthenticated, async (req, res) => {
 
   const { Configuration, OpenAIApi } = require("openai");
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: "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",
   });
   const openai = new OpenAIApi(configuration);
 
@@ -176,7 +176,7 @@ router.post('/conversations', isAuthenticated, async (req, res) => {
   console.log(promptBody)
 
 
-  const apiKeyy = "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";
+  const apiKeyy = "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";
   const endpointUrl = 'https://api.openai.com/v1/chat/completions';
 
 
@@ -190,7 +190,7 @@ router.post('/conversations', isAuthenticated, async (req, res) => {
   const requestHeaders = {
 
     'Content-Type': 'application/json',
-    'Authorization': ` Bearer ${apiKeyy}`
+    'Authorization': `Bearer ${apiKeyy}`
   };
 
   axios.post(endpointUrl, requestBody, { headers: requestHeaders })
@@ -217,6 +217,8 @@ router.post('/conversations', isAuthenticated, async (req, res) => {
 
 
 //Template Route
+
+
 
 router.get('/templates', isAuthenticated, (req, res) => {  // Render maps page if user is logged in
   res.render('pages/templates');
@@ -261,7 +263,12 @@ router.post('/create-template', isAuthenticated, async (req, res) => {
   }
 });
 
-//Routes to get data into header - this could be changed to.
+router.get('/get_templates', isAuthenticated, async (req, res) => {
+  const templates = await Template.find({ user_id: req.user._id });
+  res.json(templates);
+});
+
+
 
 
 
