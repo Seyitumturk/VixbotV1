@@ -6,6 +6,8 @@ const axios = require('axios');
 
 const Product = require('../models/Products');
 const Template = require('../models/Templates');
+const Business = require('../models/businesses');
+
 
 const mountRegisterRoutes = require('../features/register/routes');
 const mountLoginRoutes = require('../features/login/routes');
@@ -30,10 +32,7 @@ function isAuthenticated(req, res, next) {
 
   return res.redirect('/login');
 }
-router.get('/questions', (req, res) => {
-  // Render the questionnaire page
-  res.render('pages/questions');
-});
+
 
 // GET routes
 router.get('/', isAuthenticated, (req, res) => {  // Render dashboard page if user is logged in
@@ -269,6 +268,38 @@ router.get('/get_templates', isAuthenticated, async (req, res) => {
 });
 
 
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');
+}
+
+
+router.get('/onboarding', ensureAuthenticated, (req, res) => {
+  res.render('pages/onboarding');
+});
+
+
+router.post('/onboarding/create-business', ensureAuthenticated, async (req, res) => {
+  const { name, industry, occupation /* other fields */ } = req.body;
+  const newBusiness = new Business({
+    user_id: req.user.id,
+    name,
+    industry,
+    occupation,
+    // Add other fields
+  });
+
+  try {
+    await newBusiness.save();
+    await User.findByIdAndUpdate(req.user.id, { $set: { onboarding_completed: true } });
+    res.redirect('pages/conversations');
+  } catch (err) {
+    console.error(err);
+    res.render('pages/conversations', { error: 'Failed to create the business. Please try again.' });
+  }
+});
 
 
 

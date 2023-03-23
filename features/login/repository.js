@@ -42,8 +42,10 @@ async function getUser(query) {
 }
 
 async function getUserById(id) {
-  return getUser({ _id: id });
+  const user = await User.findById(id, 'id email onboarding_completed');
+  return user;
 }
+
 
 module.exports = {
   getUserForLoginData,

@@ -17,12 +17,17 @@ async function redirectToDashboard(req, res) {
     return res.status(500).render('pages/login', { messages });
   }
 
-
   debug('login:redirectToDashboard');
   req.session.userInfo = { ...userInfo };
   console.log(req.session);
 
-  return res.redirect('/conversations');
+  // Check if the user has completed the onboarding process
+  if (!userInfo.onboarding_completed) {
+    return res.redirect('onboarding');
+  } else {
+    return res.redirect('/pages/conversations');
+  }
 }
+
 
 module.exports = redirectToDashboard;

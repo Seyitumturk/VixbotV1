@@ -1,0 +1,38 @@
+<!-- onboarding.ejs -->
+<body>
+  <div class="main-content">
+    <div class="container mt-7">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <h3 class="mb-0">Onboarding</h3>
+            </div>
+            <div class="card-body">
+              <p>Welcome to the onboarding process! Please complete the following steps:</p>
+              <ol>
+                <li>Step 1: Create your first business.</li>
+                <!-- Add more steps as needed -->
+              </ol>
+              <p>Once you have completed the onboarding process, you'll be able to access all features of the platform.</p>
+
+              <form action="/onboarding/create-business" method="POST">
+                <div class="form-group">
+                  <label for="name">Business Name:</label>
+                  <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                  <label for="industry">Industry:</label>
+                  <input type="text" class="form-control" id="industry" name="industry" required>
+                </div>
+                <!-- Add more form fields for other business-related information -->
+
+                <button type="submit" class="btn btn-primary">Create Business</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
