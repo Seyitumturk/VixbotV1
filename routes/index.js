@@ -6,21 +6,14 @@ const axios = require('axios');
 
 const Product = require('../models/Products');
 const Template = require('../models/Templates');
-const Business = require('../models/businesses');
-
+const Business = require('../models/businesses');// Require your Business and User models at the top of your routes or controller file
+const User = require('../models/Users');
 
 const mountRegisterRoutes = require('../features/register/routes');
 const mountLoginRoutes = require('../features/login/routes');
 const mountLogoutRoutes = require('../features/logout/routes');
 const mountResetPasswordRoutes = require('../features/reset-password/routes');
 const mountProfileRoutes = require('../features/profile/routes');
-
-
-const { Configuration, OpenAIApi } = require("openai");
-const configuration = new Configuration({
-  apiKey: "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",
-});
-const openai = new OpenAIApi(configuration);
 
 
 
@@ -51,18 +44,6 @@ router.get('/tables', isAuthenticated, (req, res) => {  // Render tables page if
 
 
 
-// Openai Routes
-
-router.get('/conversations', isAuthenticated, async (req, res) => {
-  try {
-    const products = await Product.find({ user_id: req.user._id }); // Retrieve the products from the database
-    const selectedProduct = 'New Product';
-    const selectedTemplate = 'New Template'; // Replace this with the selected product name
-    res.render('pages/conversations', { products, selectedProduct, selectedTemplate }); // Pass the products variable to the conversations.ejs file
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
 
 //Product Route generic
 
@@ -74,6 +55,11 @@ router.get('/products', isAuthenticated, async (req, res) => {
     console.error(err);
     res.status(500).json({ error: 'Failed to retrieve products' });
   }
+});
+
+router.get('/get_products', isAuthenticated, async (req, res) => {
+  const products = await Product.find({});
+  res.json(products);
 });
 
 router.post('/create-product', isAuthenticated, async (req, res) => {
@@ -118,11 +104,6 @@ router.post('/create-product', isAuthenticated, async (req, res) => {
 
 // Route to get products for convesations endpoint 
 
-router.get('/get_products', isAuthenticated, async (req, res) => {
-  const products = await Product.find({});
-  res.json(products);
-});
-
 router.post('/set_selected_product', isAuthenticated, async (req, res) => {
   try {
     const productId = req.body.productId;
@@ -133,85 +114,6 @@ router.post('/set_selected_product', isAuthenticated, async (req, res) => {
     res.status(500).json({ error: 'Failed to set selected product ID' });
   }
 });
-
-
-
-
-router.post('/conversations', isAuthenticated, async (req, res) => {
-
-  const { Configuration, OpenAIApi } = require("openai");
-  const configuration = new Configuration({
-    apiKey: "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",
-  });
-  const openai = new OpenAIApi(configuration);
-
-  const text = req.body.text;
-
-  // Replace the productId line with the following code
-  const productId = req.session.selectedProductId;
-  console.log(productId)
-  const product = await Product.findOne({ _id: productId });
-
-
-
-  // Replace the productId line with the following code
-  const templateId = req.session.selectedTemplateId;
-  console.log(productId)
-  const template = await Product.findOne({ _id: templateId });
-
-
-
-
-
-
-  const productDetails = `Here is the information I save when my users create a new product: Product Name: ${product.product_name}\nMain Features: ${product.main_features}\nUnique Selling Points: ${product.unique_selling_points}\nPricing Model: ${product.pricing_model}\nDistribution Channels: ${product.distribution_channels}`;
-  const tone = "Professional"
-  const role = "A senior exectuive at the company that is brainstorming on improving this product."
-  const optimizeFor = "Giving stunningly good product improvement suggestions, and overall sucess of the product at hand."
-
-
-  const promptBody = `${productDetails}. Take the following details to context, don't take it as the my question:  Optimize for ${optimizeFor}, Reply in the tone of: ${tone}, When answering consider your role as: ${role},  At the end of each prompt say done.  Now answer my following questions and requests about this product using the context. Here is the question: ${text}.`
-
-  console.log(promptBody)
-
-
-  const apiKeyy = "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";
-  const endpointUrl = 'https://api.openai.com/v1/chat/completions';
-
-
-
-  const requestBody = {
-
-    "model": "gpt-3.5-turbo",
-    "messages": [{ "role": "user", "content": `${promptBody}` }],
-  };
-
-  const requestHeaders = {
-
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${apiKeyy}`
-  };
-
-  axios.post(endpointUrl, requestBody, { headers: requestHeaders })
-    .then(response => {
-      const botMessage = response.data.choices[0].message.content;
-      console.log(botMessage)
-      res.status(200).json({ response: botMessage });
-    })
-    .catch(error => {
-      console.error(error);
-      res.status(500).json({ error: error });
-    });
-});
-
-
-
-
-
-
-
-
-
 
 
 
@@ -268,6 +170,112 @@ router.get('/get_templates', isAuthenticated, async (req, res) => {
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+// Openai Routes
+
+router.get('/conversations', isAuthenticated, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const businesses = await Business.find({ user_id: user._id });
+    const chosenBusinessId = req.query.business_id;
+    const chosenBusiness = businesses.find(business => business._id.toString() === chosenBusinessId);
+
+    const products = await Product.find({ user_id: req.user._id }); // Retrieve the products from the database
+    const templates = 'New Template'; // Replace this with the selected product name
+
+    // Pass the businesses, products, and chosenBusiness variables to the conversations.ejs file
+    res.render('pages/conversations', { businesses, products, chosenBusiness });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+
+router.post('/conversations', isAuthenticated, async (req, res) => {
+
+  const text = req.body.text;
+
+
+  const chosenBusinessId = req.body.chosenBusinessId;
+  const chosenBusiness = await Business.findById(chosenBusinessId);
+
+
+
+
+  const productId = req.session.selectedProductId;
+  console.log(productId)
+  const product = await Product.findOne({ _id: productId });
+
+
+
+  const templateId = req.session.selectedTemplateId;
+  console.log(productId)
+  const template = await Product.findOne({ _id: templateId });
+
+
+
+  const productDetails = `Here is the information I save when my users create a new product: Product Name: ${product.product_name}\nMain Features: ${product.main_features}\nUnique Selling Points: ${product.unique_selling_points}\nPricing Model: ${product.pricing_model}\nDistribution Channels: ${product.distribution_channels}`;
+  const tone = "Professional"
+  const role = "A senior exectuive at the company that is brainstorming on improving this product."
+  const optimizeFor = "Giving stunningly good product improvement suggestions, and overall sucess of the product at hand."
+
+
+  const promptBody = `Business: ${chosenBusiness.name}, ${productDetails}. Take the following details to context, don't take it as my question:  Optimize for ${optimizeFor}, Reply in the tone of: ${tone}, When answering consider your role as: ${role},  At the end of each prompt say done.  Now answer my following questions and requests about this product using the context. Here is the question: ${text}.`
+
+  console.log(promptBody)
+
+
+  const apiKeyy = "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";
+  const endpointUrl = 'https://api.openai.com/v1/chat/completions';
+
+
+
+  const requestBody = {
+
+    "model": "gpt-3.5-turbo",
+    "messages": [{ "role": "user", "content": `${promptBody}` }],
+  };
+
+  const requestHeaders = {
+
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${apiKeyy}`
+  };
+
+  axios.post(endpointUrl, requestBody, { headers: requestHeaders })
+    .then(response => {
+      const botMessage = response.data.choices[0].message.content;
+      console.log(botMessage)
+      res.status(200).json({ response: botMessage });
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).json({ error: error });
+    });
+});
+
+
+
+
+
+
+
+
+
+
+// Onboarding 
+
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
@@ -294,10 +302,22 @@ router.post('/onboarding/create-business', ensureAuthenticated, async (req, res)
   try {
     await newBusiness.save();
     await User.findByIdAndUpdate(req.user.id, { $set: { onboarding_completed: true } });
-    res.redirect('pages/conversations');
+    res.redirect('/conversations');
   } catch (err) {
     console.error(err);
     res.render('pages/conversations', { error: 'Failed to create the business. Please try again.' });
+  }
+});
+
+router.post('/update-chosen-business', isAuthenticated, async (req, res) => {
+  try {
+    const chosenBusinessId = req.body.chosenBusinessId;
+    // Update the user's session with the chosen business ID
+    req.session.chosenBusinessId = chosenBusinessId;
+    res.status(200).send('Chosen business updated successfully');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error updating chosen business');
   }
 });
 

@@ -25,7 +25,7 @@ async function redirectToDashboard(req, res) {
   if (!userInfo.onboarding_completed) {
     return res.redirect('onboarding');
   } else {
-    return res.redirect('/pages/conversations');
+    return res.redirect('/conversations');
   }
 }
 

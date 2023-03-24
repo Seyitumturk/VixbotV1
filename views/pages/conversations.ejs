@@ -1,184 +1,190 @@
 <body>
     <!-- Sidenav -->
-    <% include ../partials/sidebar %>
+    <%- include('../partials/sidebar', { businesses: businesses }) %>
         <!-- Main content -->
         <div class="main-content">
             <!-- Top navbar -->
-            <% include ../partials/header %>
-                <!-- Page content -->
-                <div class="container-fluid mt--7">
-                    <!-- Table -->
-                    <div class="row">
-                        <div class="col">
-                            <div class="card shadow">
-                                <div class="card-header bg-transparent">
-                                    <div class="expandable-btn-container">
-                                        <button id="expand-btn" class="expand-btn">Options</button>
-                                    </div>
-                                    <div id="hidden-menus" class="hidden-menus">
-                                        <div class="role-options">
-                                            <button class="role-btn" data-role="Sales Vix">Sales Vix</button>
-                                            <button class="role-btn" data-role="Technical Vix">Technical Vix</button>
-                                            <button class="role-btn" data-role="Co-founder Vix">Co-founder Vix</button>
+            <% include ../partials/navbar %>
+                <!-- Top header -->
+
+                <% include ../partials/header %>
+                    <!-- Page content -->
+                    <div class="container-fluid mt--7">
+                        <!-- Table -->
+                        <div class="row">
+                            <div class="col">
+                                <div class="card shadow">
+                                    <div class="card-header bg-transparent">
+                                        <div class="expandable-btn-container">
+                                            <button id="expand-btn" class="expand-btn">Options</button>
                                         </div>
-                                        <div class="cursor-options">
-                                            <button class="cursor-btn" data-cursor="Expand">Expand</button>
-                                            <button class="cursor-btn" data-cursor="Explain">Explain</button>
-                                            <button class="cursor-btn" data-cursor="Summarize">Summarize</button>
+                                        <div id="hidden-menus" class="hidden-menus">
+                                            <div class="role-options">
+                                                <button class="role-btn" data-role="Sales Vix">Sales Vix</button>
+                                                <button class="role-btn" data-role="Technical Vix">Technical
+                                                    Vix</button>
+                                                <button class="role-btn" data-role="Co-founder Vix">Co-founder
+                                                    Vix</button>
+                                            </div>
+                                            <div class="cursor-options">
+                                                <button class="cursor-btn" data-cursor="Expand">Expand</button>
+                                                <button class="cursor-btn" data-cursor="Explain">Explain</button>
+                                                <button class="cursor-btn" data-cursor="Summarize">Summarize</button>
+                                            </div>
+                                        </div>
+                                        <div class="form-container">
+                                            <form id="conversation-form" autocomplete="off" class="conversation-form">
+                                                
+                                                <input type="text" name="text" placeholder="Type your message here...">
+                                                <button type="submit" class="generate-btn"> Generate</button>
+                                            </form>
                                         </div>
                                     </div>
-                                    <div class="form-container">
-                                        <form id="conversation-form" autocomplete="off" class="conversation-form">
-                                            <input type="text" name="text" placeholder="Type your message here...">
-                                            <button type="submit" class="generate-btn"> Generate</button>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div id="card-body-extend" class="card-body">
-                                    <div class="responses-container" id="responses-container">
-                                        <!-- Response cards go here -->
+                                    <div id="card-body-extend" class="card-body">
+                                        <div class="responses-container" id="responses-container">
+                                            <!-- Response cards go here -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <script>
-                        document.getElementById('expand-btn').addEventListener('click', function () {
-                            this.classList.toggle('expanded');
-                            document.getElementById('hidden-menus').classList.toggle('expanded');
-                        });
-
-                        const roleBtns = document.querySelectorAll(".role-btn");
-                        const cursorBtns = document.querySelectorAll(".cursor-btn");
-
-                        let selectedRole = "A senior executive at the company that is brainstorming on improving this product.";
-                        let selectedCursor = null;
-
-                        roleBtns.forEach((btn) => {
-                            btn.addEventListener("click", () => {
-                                selectedRole = btn.getAttribute("data-role");
-                            });
-                        });
-
-                        cursorBtns.forEach((btn) => {
-                            btn.addEventListener("click", () => {
-                                selectedCursor = btn.getAttribute("data-cursor");
-                            });
-                        });
-
-                        const conversationForm = document.querySelector("#conversation-form");
-                        const responseContainer = document.querySelector(".responses-container");
-
-                        conversationForm.addEventListener("submit", async (event) => {
-                            event.preventDefault(); // Prevent default form submission behavior
-
-                            const userMessage = event.target.elements.text.value;
-                            event.target.elements.text.value = ""; // Clear input text
-
-                            // Get the productId from sessionStorage
-                            const productId = sessionStorage.getItem('selectedProductId');
-
-                            const response = await fetch('/conversations', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                    text: userMessage,
-                                    role: selectedRole,
-                                    cursor: selectedCursor,
-                                    productId
-                                }),
+                        <script>
+                            document.getElementById('expand-btn').addEventListener('click', function () {
+                                this.classList.toggle('expanded');
+                                document.getElementById('hidden-menus').classList.toggle('expanded');
                             });
 
-                            const data = await response.json();
-                            if (response.status === 200) {
-                                addToConversationHistory(userMessage, data.response);
+                            const roleBtns = document.querySelectorAll(".role-btn");
+                            const cursorBtns = document.querySelectorAll(".cursor-btn");
+
+                            let selectedRole = "A senior executive at the company that is brainstorming on improving this product.";
+                            let selectedCursor = null;
+
+                            roleBtns.forEach((btn) => {
+                                btn.addEventListener("click", () => {
+                                    selectedRole = btn.getAttribute("data-role");
+                                });
+                            });
+
+                            cursorBtns.forEach((btn) => {
+                                btn.addEventListener("click", () => {
+                                    selectedCursor = btn.getAttribute("data-cursor");
+                                });
+                            });
+
+                            const conversationForm = document.querySelector("#conversation-form");
+                            const responseContainer = document.querySelector(".responses-container");
+
+                            conversationForm.addEventListener("submit", async (event) => {
+                                event.preventDefault(); // Prevent default form submission behavior
+
+                                const userMessage = event.target.elements.text.value;
+                                event.target.elements.text.value = ""; // Clear input text
+
+                                // Get the productId from sessionStorage
+                                const productId = sessionStorage.getItem('selectedProductId');
+
+                                const response = await fetch('/conversations', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        text: userMessage,
+                                        role: selectedRole,
+                                        cursor: selectedCursor,
+                                        productId
+                                    }),
+                                });
+
+                                const data = await response.json();
+                                if (response.status === 200) {
+                                    addToConversationHistory(userMessage, data.response);
+                                }
+                            });
+
+                            function addToConversationHistory(userMessage, botMessage) {
+                                const responseRow = document.createElement("div");
+                                responseRow.classList.add("response-row");
+
+                                const responseCard = document.createElement("div");
+                                responseCard.classList.add("response-card");
+                                responseCard.classList.add("large");
+                                responseCard.innerHTML = `<p class="response-text">User: ${userMessage}<br>Assistant: ${botMessage}</p>`;
+                                responseContainer.prepend(responseRow);
+                                responseRow.appendChild(responseCard);
                             }
-                        });
+                        </script>
 
-                        function addToConversationHistory(userMessage, botMessage) {
-                            const responseRow = document.createElement("div");
-                            responseRow.classList.add("response-row");
-
-                            const responseCard = document.createElement("div");
-                            responseCard.classList.add("response-card");
-                            responseCard.classList.add("large");
-                            responseCard.innerHTML = `<p class="response-text">User: ${userMessage}<br>Assistant: ${botMessage}</p>`;
-                            responseContainer.prepend(responseRow);
-                            responseRow.appendChild(responseCard);
-                        }
-                    </script>
-
-                    <script>
-                        // Fetch products and populate the dropdown menu
-                        fetch('/get_products')
-                            .then(response => response.json())
-                            .then(products => {
-                                const productMenu = document.getElementById('productMenu');
-                                products.forEach(product => {
-                                    const menuItem = document.createElement('a');
-                                    menuItem.classList.add('dropdown-item');
-                                    menuItem.setAttribute('data-id', product._id);
-                                    menuItem.textContent = product.product_name;
-                                    productMenu.appendChild(menuItem);
+                        <script>
+                            // Fetch products and populate the dropdown menu
+                            fetch('/get_products')
+                                .then(response => response.json())
+                                .then(products => {
+                                    const productMenu = document.getElementById('productMenu');
+                                    products.forEach(product => {
+                                        const menuItem = document.createElement('a');
+                                        menuItem.classList.add('dropdown-item');
+                                        menuItem.setAttribute('data-id', product._id);
+                                        menuItem.textContent = product.product_name;
+                                        productMenu.appendChild(menuItem);
+                                    });
                                 });
-                            });
 
-                        // Add event listener to update the productId when a product is selected
-                        document.getElementById('productMenu').addEventListener('click', (event) => {
-                            const selectedProduct = event.target;
-                            const productId = selectedProduct.getAttribute('data-id');
-                            const productName = selectedProduct.textContent;
+                            // Add event listener to update the productId when a product is selected
+                            document.getElementById('productMenu').addEventListener('click', (event) => {
+                                const selectedProduct = event.target;
+                                const productId = selectedProduct.getAttribute('data-id');
+                                const productName = selectedProduct.textContent;
 
-                            // Update the selected product name on the page
-                            document.getElementById('selected-product').textContent = productName;
+                                // Update the selected product name on the page
+                                document.getElementById('selected-product').textContent = productName;
 
-                            // Send the productId to the server
-                            const xhr = new XMLHttpRequest();
-                            xhr.open('POST', '/set_selected_product', true);
-                            xhr.setRequestHeader('Content-Type', 'application/json');
-                            xhr.send(JSON.stringify({ productId: productId }));
-                        });
-
-
-                        // Fetch templates and populate the dropdown menu
-                        fetch('/get_templates')
-                            .then(response => response.json())
-                            .then(templates => {
-                                const templateMenu = document.getElementById('templateMenu');
-                                templates.forEach(template => {
-                                    const menuItem = document.createElement('a');
-                                    menuItem.classList.add('dropdown-item');
-                                    menuItem.setAttribute('data-id', template._id);
-                                    menuItem.textContent = template.template_name;
-                                    templateMenu.appendChild(menuItem);
-                                });
+                                // Send the productId to the server
+                                const xhr = new XMLHttpRequest();
+                                xhr.open('POST', '/set_selected_product', true);
+                                xhr.setRequestHeader('Content-Type', 'application/json');
+                                xhr.send(JSON.stringify({ productId: productId }));
                             });
 
 
-                        // Add event listener to update the templateId when a template is selected
-                        document.getElementById('templateMenu').addEventListener('click', (event) => {
-                            const selectedTemplate = event.target;
-                            const templateId = selectedTemplate.getAttribute('data-id');
-                            const templateName = selectedTemplate.textContent;
-
-                            // Update the selected template name on the page
-                            document.getElementById('selected-template').textContent = templateName;
-
-                            // Send the templateId to the server
-                            const xhr = new XMLHttpRequest();
-                            xhr.open('POST', '/set_selected_template', true);
-                            xhr.setRequestHeader('Content-Type', 'application/json');
-                            xhr.send(JSON.stringify({ templateId: templateId }));
-                        });
+                            // Fetch templates and populate the dropdown menu
+                            fetch('/get_templates')
+                                .then(response => response.json())
+                                .then(templates => {
+                                    const templateMenu = document.getElementById('templateMenu');
+                                    templates.forEach(template => {
+                                        const menuItem = document.createElement('a');
+                                        menuItem.classList.add('dropdown-item');
+                                        menuItem.setAttribute('data-id', template._id);
+                                        menuItem.textContent = template.template_name;
+                                        templateMenu.appendChild(menuItem);
+                                    });
+                                });
 
 
-                    </script>
+                            // Add event listener to update the templateId when a template is selected
+                            document.getElementById('templateMenu').addEventListener('click', (event) => {
+                                const selectedTemplate = event.target;
+                                const templateId = selectedTemplate.getAttribute('data-id');
+                                const templateName = selectedTemplate.textContent;
 
-                    <!-- Footer -->
-                    <% include ../partials/footer %>
-                </div>
+                                // Update the selected template name on the page
+                                document.getElementById('selected-template').textContent = templateName;
+
+                                // Send the templateId to the server
+                                const xhr = new XMLHttpRequest();
+                                xhr.open('POST', '/set_selected_template', true);
+                                xhr.setRequestHeader('Content-Type', 'application/json');
+                                xhr.send(JSON.stringify({ templateId: templateId }));
+                            });
+
+
+                        </script>
+
+                        <!-- Footer -->
+                        <% include ../partials/footer %>
+                    </div>
         </div>
         <!-- Include scripts -->
         <% include ../partials/scripts %>

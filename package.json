@@ -109,5 +109,10 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
-  }
+  },
+  "description": "<<<<<<< HEAD",
+  "main": ".eslintrc.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

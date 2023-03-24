@@ -76,7 +76,11 @@
             <i class="ni ni-single-02 text-blue"></i> Company
           </a>
           <div class="dropdown-menu dropdown-menu-right p-0">
-            <!-- Business items -->
+            <% businesses.forEach(business=> { %>
+              <a class="dropdown-item" href="/conversations?business_id=<%= business._id %>">
+                <%= business.name %>
+              </a>
+              <% }) %>
           </div>
         </li>
 
@@ -98,7 +102,6 @@
             <i class="ni ni-books text-grey"></i> Templates
           </a>
         </li>
-
 
         <li class="nav-item">
           <a id="hover-div" class="nav-link" href="/">
@@ -124,4 +127,7 @@
       </ul>
     </div>
   </div>
+
+
+
 </nav>
