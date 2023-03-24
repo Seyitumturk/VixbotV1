@@ -72,8 +72,10 @@
 
         <li id="nav-item dropdown" class="nav-item dropdown">
           <a id="hover-div-choosebuss" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
-            <i class="ni ni-single-02 text-blue"></i> Company
+            aria-haspopup="true" aria-expanded="false" <% if (chosenBusiness) { %> data-business="<%= chosenBusiness._id
+              %>" <% } %>>
+
+                <i class="ni ni-single-02 text-blue"></i> Company
           </a>
           <div class="dropdown-menu dropdown-menu-right p-0">
             <% businesses.forEach(business=> { %>
@@ -83,6 +85,7 @@
               <% }) %>
           </div>
         </li>
+
 
         <li class="nav-item">
           <a id="hover-div" class="nav-link" href="/conversations">

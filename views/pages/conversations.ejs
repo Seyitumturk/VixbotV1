@@ -1,6 +1,6 @@
 <body>
     <!-- Sidenav -->
-    <%- include('../partials/sidebar', { businesses: businesses }) %>
+    <%- include('../partials/sidebar', { businesses: businesses, chosenBusiness: chosenBusiness }) %>
         <!-- Main content -->
         <div class="main-content">
             <!-- Top navbar -->
@@ -34,7 +34,7 @@
                                         </div>
                                         <div class="form-container">
                                             <form id="conversation-form" autocomplete="off" class="conversation-form">
-                                                
+
                                                 <input type="text" name="text" placeholder="Type your message here...">
                                                 <button type="submit" class="generate-btn"> Generate</button>
                                             </form>
