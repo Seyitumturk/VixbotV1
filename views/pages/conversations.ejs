@@ -122,7 +122,7 @@
                             fetch('/get_businesses')
                                 .then(response => response.json())
                                 .then(businesses => {
-                                    const businessMenu = document.querySelector('.dropdown-menu.dropdown-menu-right');
+                                    const businessMenu = document.querySelector('#businessMenu'); // Update the query selector to match the correct ID
                                     businesses.forEach(business => {
                                         const menuItem = document.createElement('a');
                                         menuItem.classList.add('dropdown-item');

@@ -177,25 +177,6 @@ router.post('/set_selected_product', isAuthenticated, async (req, res) => {
 
 
 
-router.get('/get_businesses', isAuthenticated, async (req, res) => {
-  const businesses = await Business.find({ user_id: req.user._id });
-  res.json(businesses);
-});
-
-
-
-router.post('/set_selected_business', isAuthenticated, async (req, res) => {
-  try {
-    const businessId = req.body.businessId;
-    req.session.selectedBusinessId = businessId;
-    res.status(200).json({ message: 'Business ID updated' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to set selected business ID' });
-  }
-});
-
-
 
 router.get('/get_businesses', isAuthenticated, async (req, res) => {
   const businesses = await Business.find({ user_id: req.user._id });
@@ -246,31 +227,32 @@ router.post('/conversations', isAuthenticated, async (req, res) => {
 
   // Retrieve needed data for prompt from database
 
-  const chosenBusinessId = req.body.chosenBusinessId;
-  const chosenBusiness = await Business.findById(chosenBusinessId);
+
+  const businessId = req.session.selectedBusinessId;
+  const business = await Business.findOne({ _id: businessId });
+  console.log(businessId)
+
+
 
   const productId = req.session.selectedProductId;
-  console.log(productId)
   const product = await Product.findOne({ _id: productId });
-
-  const templateId = req.session.selectedTemplateId;
   console.log(productId)
-  const template = await Product.findOne({ _id: templateId });
+
 
   //Prompt Logic Starts 
-
+  const businessDetails = `Here is my business details: Business Name: ${business}.`
   const productDetails = `Here is the information I save when my users create a new product: Product Name: ${product.product_name}\nMain Features: ${product.main_features}\nUnique Selling Points: ${product.unique_selling_points}\nPricing Model: ${product.pricing_model}\nDistribution Channels: ${product.distribution_channels}`;
   const tone = "Professional"
   const role = "A senior exectuive at the company that is brainstorming on improving this product."
   const optimizeFor = "Giving stunningly good product improvement suggestions, and overall sucess of the product at hand."
 
 
-  const promptBody = `Business: ${chosenBusiness.name}, ${productDetails}. Take the following details to context, don't take it as my question:  Optimize for ${optimizeFor}, Reply in the tone of: ${tone}, When answering consider your role as: ${role},  At the end of each prompt say done.  Now answer my following questions and requests about this product using the context. Here is the question: ${text}.`
+  const promptBody = `Business: ${businessDetails}, ${productDetails}. Take the following details to context, don't take it as my question:  Optimize for ${optimizeFor}, Reply in the tone of: ${tone}, When answering consider your role as: ${role},  At the end of each prompt say done.  Now answer my following questions and requests about this product using the context. Here is the question: ${text}.`
 
   console.log(promptBody)
 
 
-  const apiKeyy = "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";
+  const apiKeyy = "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";
   const endpointUrl = 'https://api.openai.com/v1/chat/completions';
 
 
