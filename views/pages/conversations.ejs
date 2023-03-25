@@ -34,7 +34,7 @@
                                         </div>
                                         <div class="form-container">
                                             <form id="conversation-form" autocomplete="off" class="conversation-form">
-                                                
+
                                                 <input type="text" name="text" placeholder="Type your message here...">
                                                 <button type="submit" class="generate-btn"> Generate</button>
                                             </form>
@@ -117,6 +117,57 @@
                         </script>
 
                         <script>
+
+                            // Fetch businesses and populate the sidebar dropdown menu
+                            fetch('/get_businesses')
+                                .then(response => response.json())
+                                .then(businesses => {
+                                    const businessMenu = document.querySelector('.dropdown-menu.dropdown-menu-right');
+                                    businesses.forEach(business => {
+                                        const menuItem = document.createElement('a');
+                                        menuItem.classList.add('dropdown-item');
+                                        menuItem.setAttribute('data-id', business._id);
+                                        menuItem.textContent = business.name;
+                                        businessMenu.appendChild(menuItem);
+                                    });
+                                });
+
+                            // Add event listener to update the businessId when a business is selected
+                            document.querySelector('.dropdown-menu.dropdown-menu-right').addEventListener('click', (event) => {
+                                const selectedBusiness = event.target;
+                                const businessId = selectedBusiness.getAttribute('data-id');
+                                const businessName = selectedBusiness.textContent;
+
+                                // Update the selected business name on the page
+                                // Replace 'selected-business' with the actual ID of the element where you want to display the selected business name
+                                document.getElementById('selected-business').textContent = businessName;
+
+                                // Send the businessId to the server
+                                const xhr = new XMLHttpRequest();
+                                xhr.open('POST', '/set_selected_business', true);
+                                xhr.setRequestHeader('Content-Type', 'application/json');
+                                xhr.send(JSON.stringify({ businessId: businessId }));
+                            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                             // Fetch products and populate the dropdown menu
                             fetch('/get_products')
                                 .then(response => response.json())

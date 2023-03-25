@@ -41,83 +41,7 @@ router.get('/tables', isAuthenticated, (req, res) => {  // Render tables page if
   res.render('pages/tables');
 });
 
-
-
-
-
-//Product Route generic
-
-router.get('/products', isAuthenticated, async (req, res) => {
-  try {
-    const products = await Product.find({ user_id: req.user._id });
-    res.render('pages/products', { products: products });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to retrieve products' });
-  }
-});
-
-router.get('/get_products', isAuthenticated, async (req, res) => {
-  const products = await Product.find({ user_id: req.user._id });
-  res.json(products);
-});
-
-router.post('/create-product', isAuthenticated, async (req, res) => {
-  try {
-    const productData = req.body;
-
-    // Create a new product object with the request data
-    const product = new Product({
-      user_id: req.user._id,
-      product_name: productData.product_name,
-      main_features: productData.main_features,
-      unique_selling_points: productData.unique_selling_points,
-      pricing_model: productData.pricing_model,
-      distribution_channels: productData.distribution_channels,
-    });
-
-    // Save the product to the database
-    const result = await product.save();
-
-    // Render the product card template with the new product data
-    res.render('partials/product-card', { product: result }, (err, html) => {
-      if (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Failed to render product card template' });
-      } else {
-        // Send the product card HTML back to the client
-        res.send(html);
-      }
-    });
-  } catch (err) {
-    console.error(err);
-
-    // Handle validation errors
-    if (err.name === 'ValidationError') {
-      const errors = Object.values(err.errors).map(e => e.message);
-      res.status(400).json({ error: errors });
-    } else {
-      res.status(500).json({ error: 'Failed to create product' });
-    }
-  }
-});
-
-// Route to get products for convesations endpoint 
-
-router.post('/set_selected_product', isAuthenticated, async (req, res) => {
-  try {
-    const productId = req.body.productId;
-    req.session.selectedProductId = productId;
-    res.status(200).json({ message: 'Product ID updated' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to set selected product ID' });
-  }
-});
-
-
-
-//Template Route
+//Template Routes
 
 
 
@@ -170,9 +94,124 @@ router.get('/get_templates', isAuthenticated, async (req, res) => {
 
 
 
+// Product Routes
+
+router.get('/products', isAuthenticated, async (req, res) => {
+  try {
+    const products = await Product.find({ user_id: req.user._id });
+    res.render('pages/products', { products: products });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to retrieve products' });
+  }
+});
+
+router.post('/create-product', isAuthenticated, async (req, res) => {
+  try {
+    const productData = req.body;
+
+    // Create a new product object with the request data
+    const product = new Product({
+      user_id: req.user._id,
+      product_name: productData.product_name,
+      main_features: productData.main_features,
+      unique_selling_points: productData.unique_selling_points,
+      pricing_model: productData.pricing_model,
+      distribution_channels: productData.distribution_channels,
+    });
+
+    // Save the product to the database
+    const result = await product.save();
+
+    // Render the product card template with the new product data
+    res.render('partials/product-card', { product: result }, (err, html) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to render product card template' });
+      } else {
+        // Send the product card HTML back to the client
+        res.send(html);
+      }
+    });
+  } catch (err) {
+    console.error(err);
+
+    // Handle validation errors
+    if (err.name === 'ValidationError') {
+      const errors = Object.values(err.errors).map(e => e.message);
+      res.status(400).json({ error: errors });
+    } else {
+      res.status(500).json({ error: 'Failed to create product' });
+    }
+  }
+});
 
 
 
+
+
+
+
+
+
+
+// Route to get products for convesations endpoint
+
+router.get('/get_products', isAuthenticated, async (req, res) => {
+  const products = await Product.find({ user_id: req.user._id });
+  res.json(products);
+});
+
+// Route to set products for convesations endpoint
+
+router.post('/set_selected_product', isAuthenticated, async (req, res) => {
+  try {
+    const productId = req.body.productId;
+    req.session.selectedProductId = productId;
+    res.status(200).json({ message: 'Product ID updated' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to set selected product ID' });
+  }
+});
+
+
+
+router.get('/get_businesses', isAuthenticated, async (req, res) => {
+  const businesses = await Business.find({ user_id: req.user._id });
+  res.json(businesses);
+});
+
+
+
+router.post('/set_selected_business', isAuthenticated, async (req, res) => {
+  try {
+    const businessId = req.body.businessId;
+    req.session.selectedBusinessId = businessId;
+    res.status(200).json({ message: 'Business ID updated' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to set selected business ID' });
+  }
+});
+
+
+
+router.get('/get_businesses', isAuthenticated, async (req, res) => {
+  const businesses = await Business.find({ user_id: req.user._id });
+  res.json(businesses);
+});
+
+router.post('/set_selected_business', isAuthenticated, async (req, res) => {
+  try {
+    const businessId = req.body.businessId;
+    req.session.selectedBusinessId = businessId;
+    res.status(200).json({ message: 'Business ID updated' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to set selected business ID' });
+  }
+});
 
 
 
@@ -202,27 +241,23 @@ router.get('/conversations', isAuthenticated, async (req, res) => {
 
 
 router.post('/conversations', isAuthenticated, async (req, res) => {
-
+  // User Prompt Text
   const text = req.body.text;
 
+  // Retrieve needed data for prompt from database
 
   const chosenBusinessId = req.body.chosenBusinessId;
   const chosenBusiness = await Business.findById(chosenBusinessId);
-
-
-
 
   const productId = req.session.selectedProductId;
   console.log(productId)
   const product = await Product.findOne({ _id: productId });
 
-
-
   const templateId = req.session.selectedTemplateId;
   console.log(productId)
   const template = await Product.findOne({ _id: templateId });
 
-
+  //Prompt Logic Starts 
 
   const productDetails = `Here is the information I save when my users create a new product: Product Name: ${product.product_name}\nMain Features: ${product.main_features}\nUnique Selling Points: ${product.unique_selling_points}\nPricing Model: ${product.pricing_model}\nDistribution Channels: ${product.distribution_channels}`;
   const tone = "Professional"
