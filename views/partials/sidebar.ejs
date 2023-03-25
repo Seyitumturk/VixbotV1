@@ -70,19 +70,16 @@
       <!-- Navigation -->
       <ul class="navbar-nav">
 
-        <li id="nav-item dropdown" class="nav-item dropdown">
-          <a id="hover-div-choosebuss" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="businessDropdown" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <i class="ni ni-single-02 text-blue"></i> Company
-          </a>
-          <div class="dropdown-menu dropdown-menu-right p-0">
-            <% businesses.forEach(business=> { %>
-              <a class="dropdown-item" href="/conversations?business_id=<%= business._id %>">
-                <%= business.name %>
-              </a>
-              <% }) %>
+            Choose Business
+          </button>
+          <div class="dropdown-menu dropdown-menu-right p-0" id="businessMenu">
+            <!-- Business list will be populated here -->
           </div>
-        </li>
+        </div>
+
 
         <li class="nav-item">
           <a id="hover-div" class="nav-link" href="/conversations">

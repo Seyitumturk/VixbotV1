@@ -57,11 +57,6 @@ router.get('/products', isAuthenticated, async (req, res) => {
   }
 });
 
-router.get('/get_products', isAuthenticated, async (req, res) => {
-  const products = await Product.find({});
-  res.json(products);
-});
-
 router.post('/create-product', isAuthenticated, async (req, res) => {
   try {
     const productData = req.body;
@@ -102,6 +97,12 @@ router.post('/create-product', isAuthenticated, async (req, res) => {
   }
 });
 
+router.get('/get_products', isAuthenticated, async (req, res) => {
+  const products = await Product.find({ user_id: req.user._id });
+  res.json(products);
+});
+
+
 // Route to get products for convesations endpoint 
 
 router.post('/set_selected_product', isAuthenticated, async (req, res) => {
@@ -117,63 +118,77 @@ router.post('/set_selected_product', isAuthenticated, async (req, res) => {
 
 
 
-//Template Route
+// //Template Route
 
 
 
-router.get('/templates', isAuthenticated, (req, res) => {  // Render maps page if user is logged in
-  res.render('pages/templates');
+// router.get('/templates', isAuthenticated, (req, res) => {  // Render maps page if user is logged in
+//   res.render('pages/templates');
+// });
+// router.post('/create-template', isAuthenticated, async (req, res) => {
+//   try {
+//     const templateData = req.body;
+
+//     // Create a new template object with the request data
+//     const template = new Template({
+//       user_id: req.user._id,
+//       template_name: templateData.product_name,
+//       main_feature: templateData.main_feature,
+//       unique_selling_points: templateData.unique_selling_points,
+//       pricing_model: templateData.pricing_model,
+//       distribution_channels: templateData.distribution_channels,
+//     });
+
+//     // Save the template to the database
+//     const result = await template.save();
+
+//     // Render the template card template with the new template data
+//     res.render('partials/template-card', { template: result }, (err, html) => {
+//       if (err) {
+//         console.error(err);
+//         res.status(500).json({ error: 'Failed to render template-card template' });
+//       } else {
+//         // Send the template card HTML back to the client
+//         res.send(html);
+//       }
+//     });
+//   } catch (err) {
+//     console.error(err);
+
+//     // Handle validation errors
+//     if (err.name === 'ValidationError') {
+//       const errors = Object.values(err.errors).map(e => e.message);
+//       res.status(400).json({ error: errors });
+//     } else {
+//       res.status(500).json({ error: 'Failed to create template' });
+//     }
+//   }
+// });
+
+// router.get('/get_templates', isAuthenticated, async (req, res) => {
+//   const templates = await Template.find({ user_id: req.user._id });
+//   res.json(templates);
+// });
+
+
+
+router.get('/get_businesses', isAuthenticated, async (req, res) => {
+  const businesses = await Business.find({ user_id: req.user._id });
+  res.json(businesses);
 });
-router.post('/create-template', isAuthenticated, async (req, res) => {
+
+
+
+router.post('/set_selected_business', isAuthenticated, async (req, res) => {
   try {
-    const templateData = req.body;
-
-    // Create a new template object with the request data
-    const template = new Template({
-      user_id: req.user._id,
-      template_name: templateData.product_name,
-      main_feature: templateData.main_feature,
-      unique_selling_points: templateData.unique_selling_points,
-      pricing_model: templateData.pricing_model,
-      distribution_channels: templateData.distribution_channels,
-    });
-
-    // Save the template to the database
-    const result = await template.save();
-
-    // Render the template card template with the new template data
-    res.render('partials/template-card', { template: result }, (err, html) => {
-      if (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Failed to render template-card template' });
-      } else {
-        // Send the template card HTML back to the client
-        res.send(html);
-      }
-    });
+    const businessId = req.body.businessId;
+    req.session.selectedBusinessId = businessId;
+    res.status(200).json({ message: 'Business ID updated' });
   } catch (err) {
     console.error(err);
-
-    // Handle validation errors
-    if (err.name === 'ValidationError') {
-      const errors = Object.values(err.errors).map(e => e.message);
-      res.status(400).json({ error: errors });
-    } else {
-      res.status(500).json({ error: 'Failed to create template' });
-    }
+    res.status(500).json({ error: 'Failed to set selected business ID' });
   }
 });
-
-router.get('/get_templates', isAuthenticated, async (req, res) => {
-  const templates = await Template.find({ user_id: req.user._id });
-  res.json(templates);
-});
-
-
-
-
-
-
 
 
 
@@ -185,16 +200,12 @@ router.get('/get_templates', isAuthenticated, async (req, res) => {
 
 router.get('/conversations', isAuthenticated, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
-    const businesses = await Business.find({ user_id: user._id });
-    const chosenBusinessId = req.query.business_id;
-    const chosenBusiness = businesses.find(business => business._id.toString() === chosenBusinessId);
 
     const products = await Product.find({ user_id: req.user._id }); // Retrieve the products from the database
     const templates = 'New Template'; // Replace this with the selected product name
 
     // Pass the businesses, products, and chosenBusiness variables to the conversations.ejs file
-    res.render('pages/conversations', { businesses, products, chosenBusiness });
+    res.render('pages/conversations', { products, });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -207,9 +218,8 @@ router.post('/conversations', isAuthenticated, async (req, res) => {
   const text = req.body.text;
 
 
-  const chosenBusinessId = req.body.chosenBusinessId;
-  const chosenBusiness = await Business.findById(chosenBusinessId);
-
+  const businessId = req.session.selectedBusinessId;
+  const business = await Business.findOne({ _id: businessId });
 
 
 
@@ -219,24 +229,19 @@ router.post('/conversations', isAuthenticated, async (req, res) => {
 
 
 
-  const templateId = req.session.selectedTemplateId;
-  console.log(productId)
-  const template = await Product.findOne({ _id: templateId });
-
-
-
+  const businessDetails = `Here is the information I save when my users create a new business: Bussiness Name: ${business.name}`;
   const productDetails = `Here is the information I save when my users create a new product: Product Name: ${product.product_name}\nMain Features: ${product.main_features}\nUnique Selling Points: ${product.unique_selling_points}\nPricing Model: ${product.pricing_model}\nDistribution Channels: ${product.distribution_channels}`;
   const tone = "Professional"
   const role = "A senior exectuive at the company that is brainstorming on improving this product."
   const optimizeFor = "Giving stunningly good product improvement suggestions, and overall sucess of the product at hand."
 
 
-  const promptBody = `Business: ${chosenBusiness.name}, ${productDetails}. Take the following details to context, don't take it as my question:  Optimize for ${optimizeFor}, Reply in the tone of: ${tone}, When answering consider your role as: ${role},  At the end of each prompt say done.  Now answer my following questions and requests about this product using the context. Here is the question: ${text}.`
+  const promptBody = `Business details: ${businessDetails}  .${productDetails}. Take the following details to context, don't take it as my question:  Optimize for ${optimizeFor}, Reply in the tone of: ${tone}, When answering consider your role as: ${role},  At the end of each prompt say done.  Now answer my following questions and requests about this product using the context. Here is the question: ${text}.`
 
   console.log(promptBody)
 
 
-  const apiKeyy = "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";
+  const apiKeyy = "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";
   const endpointUrl = 'https://api.openai.com/v1/chat/completions';
 
 
@@ -306,18 +311,6 @@ router.post('/onboarding/create-business', ensureAuthenticated, async (req, res)
   } catch (err) {
     console.error(err);
     res.render('pages/conversations', { error: 'Failed to create the business. Please try again.' });
-  }
-});
-
-router.post('/update-chosen-business', isAuthenticated, async (req, res) => {
-  try {
-    const chosenBusinessId = req.body.chosenBusinessId;
-    // Update the user's session with the chosen business ID
-    req.session.chosenBusinessId = chosenBusinessId;
-    res.status(200).send('Chosen business updated successfully');
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error updating chosen business');
   }
 });
 
