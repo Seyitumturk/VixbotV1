@@ -58,7 +58,7 @@ router.get('/products', isAuthenticated, async (req, res) => {
 });
 
 router.get('/get_products', isAuthenticated, async (req, res) => {
-  const products = await Product.find({});
+  const products = await Product.find({ user_id: req.user._id });
   res.json(products);
 });
 
@@ -163,7 +163,6 @@ router.post('/create-template', isAuthenticated, async (req, res) => {
     }
   }
 });
-
 router.get('/get_templates', isAuthenticated, async (req, res) => {
   const templates = await Template.find({ user_id: req.user._id });
   res.json(templates);
