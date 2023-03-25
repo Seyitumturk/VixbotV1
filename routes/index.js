@@ -252,7 +252,7 @@ router.post('/conversations', isAuthenticated, async (req, res) => {
   console.log(promptBody)
 
 
-  const apiKeyy = "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";
+  const apiKeyy = "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";
   const endpointUrl = 'https://api.openai.com/v1/chat/completions';
 
 
