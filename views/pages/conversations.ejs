@@ -143,9 +143,8 @@
                                                 .catch(error => {
                                                     console.error('Error:', error);
                                                 });
-
-                                            // Update the selected business name on the page
-                                            document.getElementById('selected-business').textContent = business.name;
+                                            // Update the dropdown placeholder with the chosen business name
+                                            document.getElementById('businessDropdownButton').textContent = business.name;
                                         });
                                         businessMenu.appendChild(menuItem);
                                     });
@@ -183,8 +182,9 @@
                                 const productId = selectedProduct.getAttribute('data-id');
                                 const productName = selectedProduct.textContent;
 
-                                // Update the selected product name on the page
-                                document.getElementById('selected-product').textContent = productName;
+
+                                // Update the dropdown placeholder with the chosen product name
+                                document.getElementById('productDropdownButton').textContent = productName;
 
                                 // Send the productId to the server
                                 const xhr = new XMLHttpRequest();

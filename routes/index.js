@@ -312,6 +312,7 @@ router.post('/onboarding/create-business', ensureAuthenticated, async (req, res)
     name,
     industry,
     occupation,
+    
     // Add other fields
   });
 
