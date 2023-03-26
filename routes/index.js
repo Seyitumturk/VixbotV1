@@ -252,7 +252,7 @@ router.post('/conversations', isAuthenticated, async (req, res) => {
   console.log(promptBody)
 
 
-  const apiKeyy = "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";
+  const apiKeyy = "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";
   const endpointUrl = 'https://api.openai.com/v1/chat/completions';
 
 
@@ -312,7 +312,7 @@ router.post('/onboarding/create-business', ensureAuthenticated, async (req, res)
     name,
     industry,
     occupation,
-    
+
     // Add other fields
   });
 
@@ -326,17 +326,6 @@ router.post('/onboarding/create-business', ensureAuthenticated, async (req, res)
   }
 });
 
-router.post('/update-chosen-business', isAuthenticated, async (req, res) => {
-  try {
-    const chosenBusinessId = req.body.chosenBusinessId;
-    // Update the user's session with the chosen business ID
-    req.session.chosenBusinessId = chosenBusinessId;
-    res.status(200).send('Chosen business updated successfully');
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error updating chosen business');
-  }
-});
 
 
 
