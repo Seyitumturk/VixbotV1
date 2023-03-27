@@ -826,21 +826,6 @@ pre code {
 
 
 
-.col-lg-3 {
-    background: linear-gradient(45deg, #5e17eb 0, #00ffff 100%) !important;
-
-    height: 400px;
-    border-radius: 10px;
-    padding: 30px;
-    margin: 3.75rem;
-}
-
-.col {
-    max-width: 100%;
-
-    flex-basis: 0;
-    flex-grow: 1;
-}
 
 .col-auto {
     width: auto;
@@ -5408,6 +5393,8 @@ input[type='button'].btn-block {
 
     border-bottom: 1px solid rgba(0, 0, 0, .05);
     background-color: #fff;
+
+    align-items: le;
 }
 
 .card-header:first-child {
@@ -20838,30 +20825,9 @@ nav {
     background: linear-gradient(45deg, #5e17eb 0, #00ffff 100%) !important;
 }
 
-#export-to-word {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #eeedfa;
-    color: white;
-    text-align: center;
-    line-height: 50px;
-    font-size: 24px;
-    margin: 10px;
-}
 
 
-#export-to-word:hover {
-    background-color: lavender;
-}
 
-.fab.fa-microsoft-word:before {
-    content: "\f1c2";
-}
 
 #initial-prompt-card {
     width: 700px;
@@ -20938,17 +20904,6 @@ nav {
 }
 
 
-.responses-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-
-.response-card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transform: translateY(-3px);
-}
 
 .large {
     flex-basis: 100%;
@@ -20958,53 +20913,6 @@ nav {
 .small {
     flex-basis: calc(50% - 5px);
     text-align: center;
-}
-
-.response-text {
-    margin: 0;
-    color: white;
-    z-index: 10;
-    font-size: larger;
-}
-
-.response-container {
-    display: flex;
-    gap: 10px;
-    overflow-y: auto;
-}
-
-.response-card {
-    background: linear-gradient(45deg, #9e47ad 0, #00ffff 190%) !important;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    color: #fff;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    perspective: 1000px;
-    transform-style: preserve-3d;
-}
-
-
-
-.response-card.large {
-    flex: 2;
-}
-
-.response-card.small {
-    flex: 1;
-}
-
-
-
-#responses-container {
-    overflow-y: auto;
-    max-height: calc(100vh - 150px);
-    /* Adjust this value based on your layout and header/footer heights */
 }
 
 .glass {
@@ -21025,30 +20933,6 @@ nav {
     -webkit-backdrop-filter: blur(40px);
     opacity: 0.8;
     z-index: -1;
-}
-
-.response-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-.response-card {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    transition: all 0.3s ease;
-    text-align: left;
-    height: 450px;
-    min-width: 300px;
-    flex-grow: 1;
-    overflow: hidden;
-}
-
-.response-card.large {
-    flex-grow: 2;
 }
 
 .expandable-btn-container {
@@ -21235,4 +21119,219 @@ nav {
 
 #header-template-card {
     background: transparent;
+}
+
+
+
+/* Product and Template box designs for container*/
+
+.col-lg-3 {
+
+    background: -webkit-linear-gradient(90deg, hsla(232, 73%, 65%, 1) 0%, hsla(279, 33%, 48%, 1) 100%);
+    height: 400px;
+    border-radius: 10px;
+    padding: 30px;
+    margin: 3.75rem;
+}
+
+.col {
+    max-width: 100%;
+
+    flex-basis: 0;
+    flex-grow: 1;
+}
+
+.product-card {
+    position: relative;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    transform-origin: center;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+}
+
+.product-card .product-details {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.product-card.expanded {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 90%;
+    height: 90%;
+    max-width: 900px;
+    max-height: 600px;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    overflow-y: auto;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.product-card.expanded .product-details {
+    white-space: normal;
+}
+
+/* Add styles for the overlay */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+}
+
+.response-text {
+    color: Black;
+    /* Make the response text white */
+    text-align: left;
+    /* Align text to the left */
+}
+
+.response-text::before {
+    font-size: x-large;
+}
+
+.response-text>span {
+    display: block;
+    border-bottom: 1px solid;
+    /* Add border bottom to separate user's question from the assistant's response */
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    width: 200px;
+    left: 0;
+    z-index: 1;
+}
+
+.dropdown-menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dropdown-menu li {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+    background-color: #f1f1f1;
+}
+
+.response-card {
+    /* Add some padding and a border to make it look like an editable area */
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.response-card:focus {
+    /* Add a different border color when the editable area is in focus */
+    border-color: #007bff;
+}
+
+.responses-container {
+    /* Add your existing styles for the responses-container */
+
+    /* Add the following styles to handle the overflow */
+    overflow-y: auto;
+    max-height: 80vh;
+    /* Adjust this value based on your desired maximum height */
+    border: 3px solid darkmagenta;
+}
+
+.user-text {
+    border-bottom: 1px solid #000;
+    display: inline-block;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.role-btn,
+.cursor-btn {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: white;
+    margin: 5px;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.role-btn:hover,
+.cursor-btn:hover {
+    opacity: 0.8;
+}
+
+/* Assign random background colors to buttons */
+.role-btn:nth-child(1) {
+    background-color: #f44336;
+}
+
+.role-btn:nth-child(2) {
+    background-color: #3f51b5;
+}
+
+.role-btn:nth-child(3) {
+    background-color: #009688;
+}
+
+.cursor-btn:nth-child(1) {
+    background-color: #ffc107;
+}
+
+.cursor-btn:nth-child(2) {
+    background-color: #ff5722;
+}
+
+.cursor-btn:nth-child(3) {
+    background-color: #673ab7;
+}
+
+.hidden-menus {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.buttons-container {
+    display: flex;
+    align-items: left;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    max-width: 0;
+    overflow: hidden;
+    transition: max-width 0.5s ease;
+
+}
+
+.hidden-menus.expanded .buttons-container {
+    max-width: 100%;
 }

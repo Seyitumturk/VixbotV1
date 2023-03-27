@@ -19,7 +19,6 @@
                                     <div class="row icon-examples">
                                         <!-- Add Product button -->
                                         <div id="add-product-btn-wrapper" class="col-lg-3 col-md-6">
-                                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
 
@@ -58,20 +57,28 @@
 
 
                                         <% products.forEach(function(product) { %>
-                                            <div class="col-lg-3 col-md-6">
-                                                <button type="button" class="btn-icon-clipboard"
-                                                    data-clipboard-text="<%= product.product_name %>"
-                                                    title="Copy to clipboard">
-                                                    <div>
-                                                        <i class="ni ni-ungroup"></i>
-                                                        <span>
-                                                            <%= product.product_name %>
-                                                        </span>
-                                                    </div>
-                                                </button>
+                                            <div class="col-lg-3 col-md-6 text-white product-card">
+                                                <div class="product-details">
+                                                    <h1 class="text-white mb-2 p-3 border-bottom border-white ">
+                                                        <%= product.product_name %>
+                                                    </h1>
+                                                    <p><strong>Main Features:</strong>
+                                                        <%= product.main_features %>
+                                                    </p>
+                                                    <p><strong>Unique Selling Points:</strong>
+                                                        <%= product.unique_selling_points %>
+                                                    </p>
+                                                    <p><strong>Pricing Model:</strong>
+                                                        <%= product.pricing_model %>
+                                                    </p>
+                                                    <p><strong>Distribution Channels:</strong>
+                                                        <%= product.distribution_channels %>
+                                                    </p>
+                                                </div>
+                                                <button type="button"
+                                                    class="edit-btn btn btn-circle btn-primary">Edit</button>
                                             </div>
                                             <% }); %>
-
 
                                                 <script>
                                                     // Wait for the document to be ready
@@ -96,12 +103,31 @@
                                                             });
                                                         });
 
-                                                    });
+                                                        // Reload the page when the form is submitted
+                                                        document.getElementById("create-product-form").addEventListener("submit", function () {
+                                                            location.reload();
+                                                        });
 
-                                                    document.getElementById("create-product-form").addEventListener("submit", function () {
-                                                        location.reload();
-                                                    });
+                                                        // Get the overlay element
+                                                        const overlay = document.getElementById('overlay');
 
+                                                        // Toggle the expanded class on a product card when it's clicked
+                                                        $('.product-card').on('click', function () {
+                                                            $(this).toggleClass('expanded');
+                                                            if ($(this).hasClass('expanded')) {
+                                                                overlay.style.display = 'block';
+                                                            } else {
+                                                                overlay.style.display = 'none';
+                                                            }
+                                                        });
+
+                                                        // Hide the expanded product card and the overlay when the overlay is clicked
+                                                        $(overlay).on('click', function () {
+                                                            $('.product-card.expanded').removeClass('expanded');
+                                                            overlay.style.display = 'none';
+                                                        });
+
+                                                    });
                                                 </script>
 
 
@@ -118,4 +144,8 @@
 
         <!-- Include scripts -->
         <% include ../partials/scripts %>
+
+            <!-- Add this overlay div before the closing </body> tag -->
+            <div id="overlay" style="display: none;"></div>
+
 </body>

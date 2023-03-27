@@ -239,20 +239,34 @@ router.post('/conversations', isAuthenticated, async (req, res) => {
   console.log(productId)
 
 
-  //Prompt Logic Starts 
-  const businessDetails = `Here is my business details: Business Name: ${business}.`
+  //Prompt Logic Starts
+  // Implementing System message option add a good degree of steeriblity over what they want. (Sam Altman)
+
+  const businessDetails = `
+  Here is my business details:
+    Business Name: ${business.name}
+    Industry: ${business.industry}
+    Occupation: ${business.occupation}
+    Stands For: ${business.stands_for}
+    Communication Tone: ${business.communication_tone}
+    Main Competitors: ${business.main_competitors}
+    Strengths: ${business.strengths}
+    Weaknesses: ${business.weaknesses}
+    Typical Growth: ${business.typical_growth}
+    Team Size and Structure: ${business.teamsize_and_structure}
+    Company Culture: ${business.company_culture}
+    Main Business Goals: ${business.main_bussiness_goals}
+  `;
   const productDetails = `Here is the information I save when my users create a new product: Product Name: ${product.product_name}\nMain Features: ${product.main_features}\nUnique Selling Points: ${product.unique_selling_points}\nPricing Model: ${product.pricing_model}\nDistribution Channels: ${product.distribution_channels}`;
-  const tone = "Professional"
-  const role = "A senior exectuive at the company that is brainstorming on improving this product."
   const optimizeFor = "Giving stunningly good product improvement suggestions, and overall sucess of the product at hand."
 
 
-  const promptBody = `Business: ${businessDetails}, ${productDetails}. Take the following details to context, don't take it as my question:  Optimize for ${optimizeFor}, Reply in the tone of: ${tone}, When answering consider your role as: ${role},  At the end of each prompt say done.  Now answer my following questions and requests about this product using the context. Here is the question: ${text}.`
+  const promptBody = `Business: ${businessDetails}, ${productDetails}. Take the following details to context, don't take it as my question:  Optimize for ${optimizeFor}.  Now answer my following questions and requests about this product using the context. Here is the question: ${text}.`
 
   console.log(promptBody)
 
 
-  const apiKeyy = "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";
+  const apiKeyy = "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";
   const endpointUrl = 'https://api.openai.com/v1/chat/completions';
 
 
@@ -260,6 +274,7 @@ router.post('/conversations', isAuthenticated, async (req, res) => {
   const requestBody = {
 
     "model": "gpt-3.5-turbo",
+    "temperature": 1.0,
     "messages": [{ "role": "user", "content": `${promptBody}` }],
   };
 
@@ -306,14 +321,37 @@ router.get('/onboarding', ensureAuthenticated, (req, res) => {
 
 
 router.post('/onboarding/create-business', ensureAuthenticated, async (req, res) => {
-  const { name, industry, occupation /* other fields */ } = req.body;
+  const {
+    name,
+    industry,
+    occupation,
+    stands_for,
+    communication_tone,
+    main_competitors,
+    strengths,
+    weaknesses,
+    typical_growth,
+    teamsize_and_structure,
+    company_culture,
+    main_bussiness_goals,
+    gpt_business_summary
+  } = req.body;
+
   const newBusiness = new Business({
     user_id: req.user.id,
     name,
     industry,
     occupation,
-
-    // Add other fields
+    stands_for,
+    communication_tone,
+    main_competitors,
+    strengths,
+    weaknesses,
+    typical_growth,
+    teamsize_and_structure,
+    company_culture,
+    main_bussiness_goals,
+    gpt_business_summary
   });
 
   try {
