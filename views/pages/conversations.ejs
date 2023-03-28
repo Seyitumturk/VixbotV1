@@ -16,24 +16,21 @@
                             <div class="col">
                                 <div class="card shadow">
                                     <div class="card-header bg-transparent">
-                                        <div class="expandable-btn-container">
-                                            <button id="expand-btn" class="expand-btn">Options</button>
-                                            <div id="hidden-menus" class="hidden-menus">
-                                                <div class="buttons-container">
-                                                    <button class="role-btn" data-role="Sales Vix"><i
-                                                            class="fas fa-user"></i></button>
-                                                    <button class="role-btn" data-role="Technical Vix"><i
-                                                            class="fas fa-cog"></i></button>
-                                                    <button class="role-btn" data-role="Co-founder Vix"><i
-                                                            class="fas fa-users"></i></button>
-                                                    <button class="cursor-btn" data-cursor="Expand"><i
-                                                            class="fas fa-expand"></i></button>
-                                                    <button class="cursor-btn" data-cursor="Explain"><i
-                                                            class="fas fa-comment"></i></button>
-                                                    <button class="cursor-btn" data-cursor="Summarize"><i
-                                                            class="fas fa-compress"></i></button>
-                                                </div>
-                                            </div>
+
+
+                                        <div class="buttons-container">
+                                            <button class="role-btn" data-role="Sales Vix"><i
+                                                    class="fas fa-user"></i></button>
+                                            <button class="role-btn" data-role="Technical Vix"><i
+                                                    class="fas fa-cog"></i></button>
+                                            <button class="role-btn" data-role="Co-founder Vix"><i
+                                                    class="fas fa-users"></i></button>
+                                            <button class="cursor-btn" data-cursor="Expand"><i
+                                                    class="fas fa-expand"></i></button>
+                                            <button class="cursor-btn" data-cursor="Explain"><i
+                                                    class="fas fa-comment"></i></button>
+                                            <button class="cursor-btn" data-cursor="Summarize"><i
+                                                    class="fas fa-compress"></i></button>
                                         </div>
                                     </div>
                                     <div class="form-container">
@@ -60,10 +57,7 @@
                         }
 
 
-                        document.getElementById('expand-btn').addEventListener('click', function () {
-                            this.classList.toggle('expanded');
-                            toggleButtonsVisibility();
-                        });
+
 
                         const roleBtns = document.querySelectorAll(".role-btn");
                         const cursorBtns = document.querySelectorAll(".cursor-btn");

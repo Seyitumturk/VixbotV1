@@ -227,6 +227,7 @@ router.post('/conversations', isAuthenticated, async (req, res) => {
 
   // Retrieve needed data for prompt from database
 
+  console.log("Received POST request on /conversations");
 
   const businessId = req.session.selectedBusinessId;
   const business = await Business.findOne({ _id: businessId });
@@ -266,7 +267,7 @@ router.post('/conversations', isAuthenticated, async (req, res) => {
   console.log(promptBody)
 
 
-  const apiKeyy = "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";
+  const apiKeyy = "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";
   const endpointUrl = 'https://api.openai.com/v1/chat/completions';
 
 
