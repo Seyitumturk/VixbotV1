@@ -17,6 +17,10 @@ const mountProfileRoutes = require('../features/profile/routes');
 
 
 
+const { Configuration, OpenAIApi } = require('openai');
+
+
+
 // Authentication middleware to check if a user is logged in before proceeding to requested route
 function isAuthenticated(req, res, next) {
   if (req.user && req.isAuthenticated()) {
@@ -262,39 +266,74 @@ router.post('/conversations', isAuthenticated, async (req, res) => {
   const optimizeFor = "Giving stunningly good product improvement suggestions, and overall sucess of the product at hand."
 
 
-  const promptBody = `Business: ${businessDetails}, ${productDetails}. Take the following details to context, don't take it as my question:  Optimize for ${optimizeFor}.  Now answer my following questions and requests about this product using the context. Here is the question: ${text}.`
-
+  const promptBody = ` Take the following details to context, don't take it as my question: Business: ${businessDetails}, ${productDetails}. Optimize for ${optimizeFor}.  Now answer my following questions and requests about this product using the context.`
   console.log(promptBody)
 
+  //Chat mode
 
-  const apiKeyy = "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";
-  const endpointUrl = 'https://api.openai.com/v1/chat/completions';
+  const configuration = new Configuration({
+    organization: "org-JIjsH2CYD6sKM4gstuapQD1f",
+    apiKey: "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"
+  })
 
 
 
-  const requestBody = {
 
-    "model": "gpt-3.5-turbo",
-    "temperature": 1.0,
-    "messages": [{ "role": "user", "content": `${promptBody}` }],
-  };
+  const openai = new OpenAIApi(configuration);
 
-  const requestHeaders = {
 
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${apiKeyy}`
-  };
 
-  axios.post(endpointUrl, requestBody, { headers: requestHeaders })
-    .then(response => {
-      const botMessage = response.data.choices[0].message.content;
-      console.log(botMessage)
-      res.status(200).json({ response: botMessage });
-    })
-    .catch(error => {
-      console.error(error);
-      res.status(500).json({ error: error });
-    });
+  const { messages } = req.body;
+
+
+  const completion = await openai.createChatCompletion({
+    model: "gpt-4",
+    messages: [
+
+      { "role": "system", "content": `You are a helpful Product Design and Innovation Assitant. And you know the following about my users as context: ${promptBody} to answer my following questions: ` }
+      , ...messages
+      // { role: "user", content: "Hello World" },
+    ]
+  })
+  console.log(messages);
+  console.log(completion.data.choices[0].message);
+
+  res.send(completion.data.choices[0].message);
+
+  //Chat mode   
+
+
+
+
+
+  //   const apiKeyy = "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";
+  //   const endpointUrl = 'https://api.openai.com/v1/chat/completions';
+
+
+
+  //   const requestBody = {
+
+  //     "model": "gpt-3.5-turbo",
+  //     "temperature": 1.0,
+  //     "messages": [{ "role": "user", "content": `${promptBody}` }],
+  //   };
+
+  //   const requestHeaders = {
+
+  //     'Content-Type': 'application/json',
+  //     'Authorization': `Bearer ${apiKeyy}`
+  //   };
+
+  //   axios.post(endpointUrl, requestBody, { headers: requestHeaders })
+  //     .then(response => {
+  //       const botMessage = response.data.choices[0].message.content;
+  //       console.log(botMessage)
+  //       res.status(200).json({ response: botMessage });
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //       res.status(500).json({ error: error });
+  //     });
 });
 
 
