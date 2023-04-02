@@ -3,374 +3,216 @@
     <% include ../partials/sidebar %>
         <!-- Main content -->
         <div class="main-content">
+            Dashboard
             <!-- Top navbar -->
-            <% include ../partials/navbar %>
-                <!-- Top header -->
 
-                <% include ../partials/header %>
-                    <!-- Page content -->
-                    <!-- Page content -->
-                    <div class="container-fluid mt--7">
-                        <!-- Table -->
-                        <div class="row">
-                            <div class="col">
-                                <div class="card shadow">
-
-                                    <div class="card-header bg-transparent">
+            <!-- Page content -->
+            <div class="container-fluid ">
+                <!-- Table -->
+                <div class="row">
+                    <div class="col">
+                        <div class="card shadow">
 
 
-                                        <div class="buttons-container">
-                                            <button class="role-btn" data-role="Sales Vix"><i
-                                                    class="fas fa-user"></i></button>
-                                            <button class="role-btn" data-role="Technical Vix"><i
-                                                    class="fas fa-cog"></i></button>
-                                            <button class="role-btn" data-role="Co-founder Vix"><i
-                                                    class="fas fa-users"></i></button>
-                                            <button class="cursor-btn" data-cursor="Expand"><i
-                                                    class="fas fa-expand"></i></button>
-                                            <button class="cursor-btn" data-cursor="Explain"><i
-                                                    class="fas fa-comment"></i></button>
-                                            <button class="cursor-btn" data-cursor="Summarize"><i
-                                                    class="fas fa-compress"></i></button>
-                                        </div>
+
+                            <div id="card-body-extend" class="card-body">
+                                <div class="responses-container" id="responses-container">
+                                    <!-- Response cards go here -->
+                                </div>
+                                <div class="card-header bg-transparent">
 
 
-                                        <div class="form-container">
-                                            <form id="conversation-form" autocomplete="off" class="conversation-form">
-                                                <input type="text" name="text" placeholder="Type your message here...">
-                                                <button type="submit" class="generate-btn"> Generate</button>
-                                            </form>
-                                            <div id="product-dropdown" class="product-dropdown" style="display:none;">
-                                            </div>
-                                        </div>
+
+
+                                    <div class="form-container">
+                                        <form id="conversation-form" autocomplete="off" class="conversation-form">
+                                            <input id="input-text-box" type="text" name="text"
+                                                placeholder="Type your message here...">
+                                            <button type="submit" class="generate-btn"> Generate</button>
+                                        </form>
+
+                                    </div>
+
+                                    <div class="button-container">
+                                        <button id="chooseProductButton" class="action-button">Choose Product</button>
+                                        <button id="chooseTemplateButton" class="action-button">Choose Template</button>
                                     </div>
 
 
-                                    <div id="card-body-extend" class="card-body">
-                                        <div class="responses-container" id="responses-container">
-                                            <!-- Response cards go here -->
+                                    <!-- Add this for the modal -->
+                                    <!-- Add this for the modal -->
+                                    <div id="productModal" class="modal">
+                                        <div class="modal-content">
+                                            <span class="close">&times;</span>
+                                            <div id="productMenu">
+                                                <% products.forEach((product)=> { %>
+                                                    <button class="product-item"
+                                                        data-product='<%- JSON.stringify(product) %>'>
+                                                        <%= product.product_name %>
+                                                    </button>
+                                                    <% }); %>
+                                            </div>
                                         </div>
                                     </div>
 
                                 </div>
 
                             </div>
+
                         </div>
-                        <script> $(document).ready(function () {
-                                // Hide the default context menu
-                                $(document).on("contextmenu", function (e) {
-                                    e.preventDefault();
-                                });
 
-                                // Show the custom context menu
-                                $(document).on("mousedown", function (e) {
-                                    if (e.which === 3) {
-                                        $("#customContextMenu").css({
-                                            display: "block",
-                                            top: e.pageY,
-                                            left: e.pageX,
-                                        });
-                                    } else {
-                                        $("#customContextMenu").hide();
-                                    }
-                                });
-
-                                // Handle custom context menu item clicks
-                                $("#option1").on("click", function () {
-                                    // Handle Option 1 click
-                                    console.log("Option 1 clicked");
-                                });
-
-                                $("#option2").on("click", function () {
-                                    // Handle Option 2 click
-                                    console.log("Option 2 clicked");
-                                });
-
-                                $("#option3").on("click", function () {
-                                    // Handle Option 3 click
-                                    console.log("Option 3 clicked");
-                                });
-                            });
-                        </script>
-
-                        <script>
-                            function toggleButtonsVisibility() {
-                                document.getElementById('hidden-menus').classList.toggle('expanded');
-                            }
-
-
-
-
-                            const roleBtns = document.querySelectorAll(".role-btn");
-                            const cursorBtns = document.querySelectorAll(".cursor-btn");
-
-                            let selectedRole = "A senior executive at the company that is brainstorming on improving this product.";
-                            let selectedCursor = null;
-
-                            roleBtns.forEach((btn) => {
-                                btn.addEventListener("click", () => {
-                                    selectedRole = btn.getAttribute("data-role");
-                                });
-                            });
-
-                            cursorBtns.forEach((btn) => {
-                                btn.addEventListener("click", () => {
-                                    selectedCursor = btn.getAttribute("data-cursor");
-                                });
-                            });
-
-                            let messages = []
-
-
-                            const conversationForm = document.querySelector("#conversation-form");
-                            const responseContainer = document.querySelector(".responses-container");
-
-                            conversationForm.addEventListener("submit", async (event) => {
-                                event.preventDefault(); // Prevent default form submission behavior
-
-                                const userMessage = event.target.elements.text.value;
-                                event.target.elements.text.value = ""; // Clear input text
-
-                                // Get the productId from sessionStorage
-                                const productId = sessionStorage.getItem('selectedProductId');
-
-                                const messageText = userMessage;
-
-                                const newMessage = { "role": "user", "content": `${messageText}` }
-
-                                messages.push(newMessage)
-
-                                console.log(messages)
-
-                                const response = await fetch('/conversations', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                    },
-                                    body: JSON.stringify({
-                                        messages,
-                                        productId
-                                    }),
-                                });
-
-                                const data = await response.json();
-                                if (response.status === 200) {
-                                    const gptResponse = { "role": "assistant", "content": data.response };
-                                    messages.push(gptResponse); // Add this line
-                                    addToConversationHistory(userMessage, data.response);
-                                }
-
-                            });
-
-
-                            function formatResponse(text) {
-                                // Replace line breaks with <br> tags
-                                let formattedText = text.replace(/\n/g, '<br>');
-
-                                // Replace list markers with appropriate HTML tags
-                                formattedText = formattedText.replace(/•\s/g, '<li>').replace(/<br><li>/g, '<li>');
-                                formattedText = '<ul>' + formattedText + '</ul>';
-
-                                // Remove <ul> and </ul> if there are no <li> elements
-                                formattedText = formattedText.replace('<ul><br>', '').replace('<br></ul>', '');
-
-                                return formattedText;
-                            }
-                            const inputField = document.querySelector('input[name="text"]');
-                            const productDropdown = document.getElementById("product-dropdown");
-
-                            inputField.addEventListener("input", (event) => {
-                                const inputText = event.target.value;
-                                const cursorPosition = inputField.selectionStart;
-                                const textBeforeCursor = inputText.slice(0, cursorPosition);
-
-                                if (textBeforeCursor.endsWith("//")) {
-                                    productDropdown.innerHTML = generateProductList();
-                                    productDropdown.style.display = "block";
-                                } else {
-                                    productDropdown.style.display = "none";
-                                }
-                            });
-
-
-                            inputField.addEventListener("focus", () => {
-                                if (inputField.value.trim() === "//") {
-                                    productDropdown.style.display = "block";
-                                }
-                            });
-
-                            inputField.addEventListener("blur", () => {
-                                setTimeout(() => {
-                                    productDropdown.style.display = "none";
-                                }, 200);
-                            });
-
-                            function generateProductList() {
-                                // Replace this array with the actual product list from your data
-                                const productList = [
-                                    "Product 1",
-                                    "Product 2",
-                                    "Product 3",
-                                    "Product 4",
-                                ];
-
-                                let productListHTML = '<ul>';
-                                productList.forEach((product) => {
-                                    productListHTML += `<li class="product-item">${product}</li>`;
-                                });
-                                productListHTML += '</ul>';
-
-                                return productListHTML;
-                            }
-
-                            // Add event listener to handle product item clicks
-                            document.getElementById("product-dropdown").addEventListener("click", (event) => {
-                                if (event.target.classList.contains("product-item")) {
-                                    const selectedProduct = event.target.textContent;
-                                    const cursorPosition = inputField.selectionStart;
-                                    inputField.value = inputField.value.substring(0, cursorPosition - 2) + selectedProduct + inputField.value.substring(cursorPosition);
-                                    inputField.focus();
-                                    productDropdown.style.display = "none";
-                                }
-                            });
-
-
-
-                            function addToConversationHistory(userMessage, botMessage) {
-                                const responseRow = document.createElement("div");
-                                responseRow.classList.add("response-row");
-
-                                const responseCard = document.createElement("div");
-                                responseCard.classList.add("response-card");
-                                responseCard.classList.add("large");
-                                responseCard.setAttribute("contentEditable", "true"); // Add contentEditable attribute here
-
-                                const userText = document.createElement("span");
-                                userText.innerHTML = formatResponse(userMessage);
-
-                                const assistantText = document.createElement("span");
-                                assistantText.innerHTML = formatResponse(botMessage);
-
-                                const responseText = document.createElement("p");
-                                responseText.classList.add("response-text");
-                                responseText.appendChild(userText);
-                                responseText.appendChild(assistantText);
-
-                                responseCard.appendChild(responseText);
-                                responseRow.appendChild(responseCard);
-                                responseContainer.prepend(responseRow);
-                            }
-
-                        </script>
-
-                        <script>
-
-                            fetch('/get_businesses')
-                                .then(response => response.json())
-                                .then(businesses => {
-                                    const businessMenu = document.querySelector('#businessMenu');
-                                    businesses.forEach(business => {
-                                        const menuItem = document.createElement('a');
-                                        menuItem.classList.add('dropdown-item');
-                                        menuItem.setAttribute('data-id', business._id);
-                                        menuItem.textContent = business.name;
-                                        menuItem.addEventListener('click', () => {
-                                            // Set the selected business ID when clicked
-                                            fetch('/set_selected_business', {
-                                                method: 'POST',
-                                                headers: {
-                                                    'Content-Type': 'application/json'
-                                                },
-                                                body: JSON.stringify({ businessId: business._id })
-                                            })
-                                                .then(response => response.json())
-                                                .then(data => {
-                                                    console.log(data);
-                                                })
-                                                .catch(error => {
-                                                    console.error('Error:', error);
-                                                });
-                                            // Update the dropdown placeholder with the chosen business name
-                                            document.getElementById('businessDropdownButton').textContent = business.name;
-                                        });
-                                        businessMenu.appendChild(menuItem);
-                                    });
-                                });
-
-
-
-                            // Fetch products and populate the dropdown menu
-                            fetch('/get_products')
-                                .then(response => response.json())
-                                .then(products => {
-                                    const productMenu = document.getElementById('productMenu');
-                                    products.forEach(product => {
-                                        const menuItem = document.createElement('a');
-                                        menuItem.classList.add('dropdown-item');
-                                        menuItem.setAttribute('data-id', product._id);
-                                        menuItem.textContent = product.product_name;
-                                        productMenu.appendChild(menuItem);
-                                    });
-                                });
-
-                            // Add event listener to update the productId when a product is selected
-                            document.getElementById('productMenu').addEventListener('click', (event) => {
-                                const selectedProduct = event.target;
-                                const productId = selectedProduct.getAttribute('data-id');
-                                const productName = selectedProduct.textContent;
-
-
-                                // Update the dropdown placeholder with the chosen product name
-                                document.getElementById('productDropdownButton').textContent = productName;
-
-                                // Send the productId to the server
-                                const xhr = new XMLHttpRequest();
-                                xhr.open('POST', '/set_selected_product', true);
-                                xhr.setRequestHeader('Content-Type', 'application/json');
-                                xhr.send(JSON.stringify({ productId: productId }));
-                            });
-
-
-                            // Fetch templates and populate the dropdown menu
-                            fetch('/get_templates')
-                                .then(response => response.json())
-                                .then(templates => {
-                                    const templateMenu = document.getElementById('templateMenu');
-                                    templates.forEach(template => {
-                                        const menuItem = document.createElement('a');
-                                        menuItem.classList.add('dropdown-item');
-                                        menuItem.setAttribute('data-id', template._id);
-                                        menuItem.textContent = template.template_name;
-                                        templateMenu.appendChild(menuItem);
-                                    });
-                                });
-
-
-                            // Add event listener to update the templateId when a template is selected
-                            document.getElementById('templateMenu').addEventListener('click', (event) => {
-                                const selectedTemplate = event.target;
-                                const templateId = selectedTemplate.getAttribute('data-id');
-                                const templateName = selectedTemplate.textContent;
-
-                                // Update the selected template name on the page
-                                document.getElementById('selected-template').textContent = templateName;
-
-                                // Send the templateId to the server
-                                const xhr = new XMLHttpRequest();
-                                xhr.open('POST', '/set_selected_template', true);
-                                xhr.setRequestHeader('Content-Type', 'application/json');
-                                xhr.send(JSON.stringify({ templateId: templateId }));
-                            });
-
-
-                        </script>
-
-                        <!-- Footer -->
-                        <% include ../partials/footer %>
                     </div>
+                </div>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        // Get the modal and button elements
+                        const productModal = document.getElementById("productModal");
+                        const chooseProductButton = document.getElementById("chooseProductButton");
+
+                        // Add this event listener for the "Choose Product" button
+                        chooseProductButton.addEventListener("click", () => {
+                            productModal.style.display = "block";
+                        });
+
+                        // Close the product modal when the user clicks on the close button
+                        const closeModalButton = document.querySelector(".close");
+                        closeModalButton.addEventListener("click", () => {
+                            productModal.style.display = "none";
+                        });
+
+                        // Close the product modal when the user clicks outside the modal
+                        window.onclick = (event) => {
+                            if (event.target == productModal) {
+                                productModal.style.display = "none";
+                            }
+                        };
+
+                        // Add event listener for product items
+                        const productItems = document.querySelectorAll(".product-item");
+                        productItems.forEach(item => {
+                            item.addEventListener("click", event => {
+                                const product = JSON.parse(event.target.dataset.product);
+                                localStorage.setItem("selectedProduct", JSON.stringify(product));
+                                productModal.style.display = "none";
+                            });
+                        });
+                    });
+
+
+                    let conversationHistory = [
+                        { role: "system", content: "You are a helpful assistant." }
+                    ];
+
+                    document.getElementById('conversation-form').addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        const inputTextBox = document.getElementById('input-text-box');
+                        const userMessage = inputTextBox.value;
+                        inputTextBox.value = '';
+
+                        addMessageToUI('user', userMessage);
+                        conversationHistory.push({ role: "user", content: userMessage });
+
+                        const selectedProduct = JSON.parse(localStorage.getItem("selectedProduct"));
+                        if (selectedProduct) {
+                            const data = { messages: conversationHistory, product: selectedProduct };
+
+                            const response = await fetch('/conversations', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(data),
+                            });
+
+                            if (response.ok) {
+                                const responseData = await response.json();
+                                const botMessage = responseData.response;
+                                conversationHistory.push({ role: "assistant", content: botMessage });
+                                addMessageToUI('bot', botMessage);
+                            } else {
+                                console.error('Error while sending request:', response.status, response.statusText);
+                            }
+                        } else {
+                            alert("Please choose a product before sending a message.");
+                        }
+                    });
+
+                    function addMessageToUI(role, message) {
+                        const messageContainer = document.createElement('div');
+                        messageContainer.className = `message-container ${role}`;
+
+                        const messageContent = document.createElement('div');
+                        messageContent.className = 'message-content';
+                        const formattedMessage = message.split('\n').filter(line => line.trim() !== '').map(line => {
+                            if (line.startsWith('- ') || line.startsWith('* ')) {
+                                const listItem = document.createElement('li');
+                                listItem.textContent = line.slice(2).trim();
+                                return listItem.outerHTML;
+                            } else {
+                                const paragraph = document.createElement('p');
+                                paragraph.textContent = line.trim();
+                                return paragraph.outerHTML;
+                            }
+                        }).join('');
+
+                        messageContent.innerHTML = formattedMessage;
+                        messageContainer.appendChild(messageContent);
+
+                        if (role === 'bot') {
+                            const optionsContainer = document.createElement('div');
+                            optionsContainer.className = 'options-container';
+                            messageContainer.appendChild(optionsContainer);
+
+                            const optionsBtn = document.createElement('button');
+                            optionsBtn.className = 'options-btn';
+                            optionsBtn.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
+                            optionsContainer.appendChild(optionsBtn);
+
+                            const optionsList = document.createElement('ul');
+                            optionsList.className = 'options-list';
+                            optionsContainer.appendChild(optionsList);
+
+                            const options = ['Explain', 'Summarize', 'Actionize', 'Expand'];
+
+                            options.forEach(option => {
+                                const optionItem = document.createElement('li');
+                                const optionBtn = document.createElement('button');
+                                optionBtn.textContent = option;
+                                optionBtn.onclick = () => {
+                                    console.log(`Clicked ${option} for message:`, message);
+                                    // Perform your desired action for the option and message here
+                                };
+                                optionItem.appendChild(optionBtn);
+                                optionsList.appendChild(optionItem);
+                            });
+
+                            optionsBtn.onclick = () => {
+                                optionsList.classList.toggle('open');
+                            };
+                        }
+
+                        document.getElementById('responses-container').appendChild(messageContainer);
+                    }
+
+                    document.addEventListener('click', (e) => {
+                        if (!e.target.matches('.options-btn') && !e.target.matches('.options-dropdown') && !e.target.closest('.options-dropdown')) {
+                            const dropdowns = document.getElementsByClassName('options-dropdown');
+                            for (let i = 0; i < dropdowns.length; i++) {
+                                dropdowns[i].style.display = 'none';
+                            }
+                        }
+                    });
+
+
+
+
+                </script>
+
+
+
+            </div>
         </div>
         <!-- Include scripts -->
         <% include ../partials/scripts %>
 </body>
-
-</html>

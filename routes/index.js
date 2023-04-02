@@ -159,26 +159,6 @@ router.post('/create-product', isAuthenticated, async (req, res) => {
 
 
 
-// Route to get products for convesations endpoint
-
-router.get('/get_products', isAuthenticated, async (req, res) => {
-  const products = await Product.find({ user_id: req.user._id });
-  res.json(products);
-});
-
-// Route to set products for convesations endpoint
-
-router.post('/set_selected_product', isAuthenticated, async (req, res) => {
-  try {
-    const productId = req.body.productId;
-    req.session.selectedProductId = productId;
-    res.status(200).json({ message: 'Product ID updated' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to set selected product ID' });
-  }
-});
-
 
 
 
@@ -224,84 +204,84 @@ router.get('/conversations', isAuthenticated, async (req, res) => {
 });
 
 
+// MAIN BABY
 
 router.post('/conversations', isAuthenticated, async (req, res) => {
-  // User Prompt Text
-  const text = req.body.text;
-
-  // Retrieve needed data for prompt from database
-
-  console.log("Received POST request on /conversations");
-
-  const businessId = req.session.selectedBusinessId;
-  const business = await Business.findOne({ _id: businessId });
-  console.log(businessId)
 
 
+  const { messages, temperature, product } = req.body;
+  const productInformation = `You are a helpful assistant. Your user's selected product is: ${product.product_name}. Its main features are: ${product.main_features}. Its unique selling points are: ${product.unique_selling_points}. The pricing model is: ${product.pricing_model}. The distribution channels are: ${product.distribution_channels}.`;
 
-  const productId = req.session.selectedProductId;
-  const product = await Product.findOne({ _id: productId });
-  console.log(productId)
-
-
-  //Prompt Logic Starts
-  // Implementing System message option add a good degree of steeriblity over what they want. (Sam Altman)
-
-  const businessDetails = `
-  Here is my business details:
-    Business Name: ${business.name}
-    Industry: ${business.industry}
-    Occupation: ${business.occupation}
-    Stands For: ${business.stands_for}
-    Communication Tone: ${business.communication_tone}
-    Main Competitors: ${business.main_competitors}
-    Strengths: ${business.strengths}
-    Weaknesses: ${business.weaknesses}
-    Typical Growth: ${business.typical_growth}
-    Team Size and Structure: ${business.teamsize_and_structure}
-    Company Culture: ${business.company_culture}
-    Main Business Goals: ${business.main_bussiness_goals}
-  `;
-  const productDetails = `Here is the information I save when my users create a new product: Product Name: ${product.product_name}\nMain Features: ${product.main_features}\nUnique Selling Points: ${product.unique_selling_points}\nPricing Model: ${product.pricing_model}\nDistribution Channels: ${product.distribution_channels}`;
-  const optimizeFor = "Giving stunningly good product improvement suggestions, and overall sucess of the product at hand."
-
-
-  const promptBody = ` Take the following details to context, don't take it as my question: Business: ${businessDetails}, ${productDetails}. Optimize for ${optimizeFor}.  Now answer my following questions and requests about this product using the context.`
-  console.log(promptBody)
-
-  //Chat mode
 
   const configuration = new Configuration({
     organization: "org-JIjsH2CYD6sKM4gstuapQD1f",
-    apiKey: "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"
+    apiKey: "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"
   })
 
-
-
-
   const openai = new OpenAIApi(configuration);
-
-
-
-  const { messages } = req.body;
 
 
   const completion = await openai.createChatCompletion({
     model: "gpt-4",
     messages: [
 
-      { "role": "system", "content": `You are a helpful Product Design and Innovation Assitant. And you know the following about my users as context: ${promptBody} to answer my following questions: ` }
+      { "role": "system", "content": productInformation }
       , ...messages
       // { role: "user", content: "Hello World" },
-    ]
+    ],
+    temperature: temperature,
   })
   console.log(messages);
   console.log(completion.data.choices[0].message);
+  const botMessage = completion.data.choices[0].message.content;
+  res.json({ response: botMessage });
 
-  res.send(completion.data.choices[0].message);
 
   //Chat mode   
 
+  // User Prompt Text
+
+  // // Retrieve needed data for prompt from database
+
+  // console.log("Received POST request on /conversations");
+
+  // const businessId = req.session.selectedBusinessId;
+  // const business = await Business.findOne({ _id: businessId });
+  // console.log(businessId)
+
+
+
+  // const productId = req.session.selectedProductId;
+  // const product = await Product.findOne({ _id: productId });
+  // console.log(productId)
+
+
+  // //Prompt Logic Starts
+  // // Implementing System message option add a good degree of steeriblity over what they want. (Sam Altman)
+
+  // const businessDetails = `
+  // Here is my business details:
+  //   Business Name: ${business.name}
+  //   Industry: ${business.industry}
+  //   Occupation: ${business.occupation}
+  //   Stands For: ${business.stands_for}
+  //   Communication Tone: ${business.communication_tone}
+  //   Main Competitors: ${business.main_competitors}
+  //   Strengths: ${business.strengths}
+  //   Weaknesses: ${business.weaknesses}
+  //   Typical Growth: ${business.typical_growth}
+  //   Team Size and Structure: ${business.teamsize_and_structure}
+  //   Company Culture: ${business.company_culture}
+  //   Main Business Goals: ${business.main_bussiness_goals}
+  // `;
+  // const productDetails = `Here is the information I save when my users create a new product: Product Name: ${product.product_name}\nMain Features: ${product.main_features}\nUnique Selling Points: ${product.unique_selling_points}\nPricing Model: ${product.pricing_model}\nDistribution Channels: ${product.distribution_channels}`;
+  // const optimizeFor = "Giving stunningly good product improvement suggestions, and overall sucess of the product at hand."
+
+
+  // const promptBody = ` Take the following details to context, don't take it as my question: Business: ${businessDetails}, ${productDetails}. Optimize for ${optimizeFor}.  Now answer my following questions and requests about this product using the context.`
+  // console.log(promptBody)
+
+  //Chat mode
 
 
 

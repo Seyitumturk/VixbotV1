@@ -1625,11 +1625,6 @@ pre code {
         flex: 0 0 16.66667%;
     }
 
-    .col-xl-3 {
-        max-width: 25%;
-
-        flex: 0 0 25%;
-    }
 
     .col-xl-4 {
         max-width: 33.33333%;
@@ -6577,6 +6572,8 @@ button.close {
     overflow: hidden;
 
     outline: 0;
+    height: 200px;
+    background-color: #004085;
 }
 
 .modal-dialog {
@@ -16270,7 +16267,7 @@ a.btn-icon-only {
 */
 .main-content {
     position: relative;
-    background-color: #fafafc;
+    background-color: #E5E4E2;
 }
 
 .main-content:hover {
@@ -20673,6 +20670,23 @@ nav {
     opacity: 1;
 }
 
+#input-text-box {
+    color: white;
+    background: linear-gradient(95deg, #9e47ad 0, #00ffff 170%) !important;
+    opacity: 0.7;
+    margin-bottom: 20px;
+
+}
+
+/* Change placeholder text color */
+#input-text-box::placeholder {
+    color: white;
+    /* Replace with your desired color in HEX, RGB or color name */
+    opacity: 1;
+    /* If you want a different opacity, adjust this value */
+}
+
+
 .conversation-form {
     display: flex;
     align-items: left;
@@ -20699,6 +20713,7 @@ nav {
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
     outline: none !important;
+    height: 50px;
 
 }
 
@@ -20714,7 +20729,6 @@ nav {
 }
 
 .form-container {
-    margin-bottom: 10px;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;
@@ -20846,7 +20860,7 @@ nav {
 
 
 #card-body-extend {
-    height: 100vh;
+    height: 99vh;
 }
 
 .prompt-text input[type="text"] {
@@ -21238,7 +21252,6 @@ nav {
 .responses-container {
     overflow-y: auto;
     max-height: 80vh;
-    border: 3px solid darkmagenta;
 }
 
 .user-text {
@@ -21262,7 +21275,7 @@ nav {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: orange;
+    background: #9e47ad !important;
     color: white;
     margin: 5px;
     padding: 0;
@@ -21271,13 +21284,27 @@ nav {
     font-size: 1.2rem;
 }
 
+#addto-folder-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 20%;
+
+}
+
+#nav-bg {
+    background: linear-gradient(95deg, #9e47ad 0, #00ffff 170%) !important;
+    border-radius: 8%;
+
+}
+
+
 .role-btn:hover,
 .cursor-btn:hover {
     opacity: 0.8;
 }
 
 .role-btn:nth-child(1) {
-    background-color: #f44336;
+    background-color: red;
 }
 
 .role-btn:nth-child(2) {
@@ -21302,7 +21329,9 @@ nav {
 
 .options-container {
     display: flex;
-    align-items: center;
+    bottom: 8px;
+    left: 16px;
+    justify-content: flex-start;
 }
 
 .expand-btn {
@@ -21360,4 +21389,198 @@ nav {
 .context-menu a {
     text-decoration: none;
     color: #333;
+}
+
+#businessDropdownButton {
+    border-radius: 100px;
+}
+
+
+#product-bg {
+    background-color: grey;
+}
+
+#template-bg {
+    background-color: grey;
+
+}
+
+.col-xl-3 {
+    flex: 0 0 50%;
+
+}
+
+.message-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+    margin-bottom: 16px;
+}
+
+.message-container.user {
+    align-self: flex-end;
+    color: white;
+    border-radius: 20%;
+}
+
+.message-content {
+    background-color: gray;
+    border-radius: 16px;
+    padding: 16px;
+    color: white;
+}
+
+.options-container {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.options-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    left: 0;
+    margin-right: 20px;
+    width: 90px;
+    outline: none;
+
+}
+
+
+
+.options-list {
+    display: flex;
+    background-color: transparent;
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0 0 0;
+    /* Add margin top */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    outline: none;
+}
+
+.options-list.open {
+    max-height: 50px;
+}
+
+.options-list li {
+    padding: 0 3px;
+    margin-right: 5px;
+}
+
+.options-list button {
+    background-color: #007bff;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    text-align: center;
+    outline: none;
+}
+
+.options-btn i {
+    outline: none;
+}
+
+button:focus {
+    outline: none;
+}
+
+
+/* Add this for the modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Add styles for product buttons */
+.product-item {
+    display: block;
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    text-align: left;
+    padding: 10px;
+    margin: 5px 0;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.product-item:hover {
+    background-color: #0056b3;
+}
+
+.product-item:active {
+    background-color: #004085;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.action-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.action-button:hover {
+    background-color: #0056b3;
+}
+
+.action-button:active {
+    background-color: #004085;
+}
+
+.modal-content {
+    /* ... */
+    z-index: 1000;
+}
+
+.product-item {
+    /* ... */
+    z-index: 1001;
 }
