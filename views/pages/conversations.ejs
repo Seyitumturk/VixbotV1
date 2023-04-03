@@ -3,7 +3,7 @@
     <% include ../partials/sidebar %>
         <!-- Main content -->
         <div class="main-content">
-            Dashboard
+
             <!-- Top navbar -->
 
             <!-- Page content -->
@@ -142,6 +142,20 @@
                         const messageContainer = document.createElement('div');
                         messageContainer.className = `message-container ${role}`;
 
+
+                        const messageHeader = document.createElement('div');
+                        messageHeader.className = 'message-header';
+                        messageContainer.appendChild(messageHeader);
+
+
+                        const profileIcon = document.createElement('div');
+                        profileIcon.className = `profile-icon ${role}`;
+                        messageContainer.appendChild(profileIcon);
+
+                        messageHeader.appendChild(profileIcon);
+
+
+                        //Format response text
                         const messageContent = document.createElement('div');
                         messageContent.className = 'message-content';
                         const formattedMessage = message.split('\n').filter(line => line.trim() !== '').map(line => {
@@ -162,12 +176,7 @@
                         if (role === 'bot') {
                             const optionsContainer = document.createElement('div');
                             optionsContainer.className = 'options-container';
-                            messageContainer.appendChild(optionsContainer);
-
-                            const optionsBtn = document.createElement('button');
-                            optionsBtn.className = 'options-btn';
-                            optionsBtn.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
-                            optionsContainer.appendChild(optionsBtn);
+                            messageHeader.appendChild(optionsContainer);
 
                             const optionsList = document.createElement('ul');
                             optionsList.className = 'options-list';
@@ -187,9 +196,9 @@
                                 optionsList.appendChild(optionItem);
                             });
 
-                            optionsBtn.onclick = () => {
+                            profileIcon.addEventListener('click', () => {
                                 optionsList.classList.toggle('open');
-                            };
+                            });
                         }
 
                         document.getElementById('responses-container').appendChild(messageContainer);
