@@ -696,6 +696,9 @@ pre code {
     margin-left: auto;
     padding-right: 15px;
     padding-left: 15px;
+    display: flex;
+    flex-direction: column;
+    max-height: 100vh;
 }
 
 #main-page-fluid {
@@ -5324,19 +5327,15 @@ input[type='button'].btn-block {
 
 .card {
     position: relative;
-
     display: flex;
     flex-direction: column;
-
     min-width: 0;
-
-
     word-wrap: break-word;
-
     border-radius: .375rem;
     background-color: #fff;
     background-clip: border-box;
-    box-shadow: 0 0 20px #9e47ad,
+    box-shadow: 0 0 20px #9e47ad;
+    height: 100vh;
 
 }
 
@@ -5357,8 +5356,10 @@ input[type='button'].btn-block {
 
 .card-body {
     padding: 1.5rem;
-
+    overflow: scroll;
     flex: 1 1 auto;
+    max-height: 100vh;
+
 }
 
 .card-title {
@@ -5382,15 +5383,6 @@ input[type='button'].btn-block {
     margin-left: 1.5rem;
 }
 
-.card-header {
-    margin-bottom: 0;
-    padding: 1.25rem 1.5rem;
-
-    border-bottom: 1px solid rgba(0, 0, 0, .05);
-    background-color: #fff;
-
-    align-items: le;
-}
 
 .card-header:first-child {
     border-radius: calc(.375rem - 1px) calc(.375rem - 1px) 0 0;
@@ -5400,12 +5392,7 @@ input[type='button'].btn-block {
     border-top: 0;
 }
 
-.card-footer {
-    padding: 1.25rem 1.5rem;
 
-    border-top: 1px solid rgba(0, 0, 0, .05);
-    background-color: #fff;
-}
 
 .card-footer:last-child {
     border-radius: 0 0 calc(.375rem - 1px) calc(.375rem - 1px);
@@ -6641,6 +6628,7 @@ button.close {
     right: 0;
     bottom: 0;
     left: 0;
+    display: none !important;
 
     background-color: #000;
 }
@@ -16263,16 +16251,8 @@ a.btn-icon-only {
     background-color: transparent;
 }
 
-/*     background-color: #8965e0; default
-*/
-.main-content {
-    position: relative;
-    background-color: #E5E4E2;
-}
 
-.main-content:hover {
-    background-position: 100% 0%;
-}
+
 
 @keyframes gradient-shift {
     0% {
@@ -20613,10 +20593,15 @@ nav {
     box-shadow: none;
 }
 
-.card-header {
+.card-footer {
+    margin-bottom: 0;
+    padding: 1.25rem 1.5rem;
+    background-color: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid #ccc;
+    flex-wrap: wrap;
 }
 
 .card-body {
@@ -20670,28 +20655,13 @@ nav {
     opacity: 1;
 }
 
-#input-text-box {
-    color: white;
-    background: linear-gradient(95deg, #9e47ad 0, #00ffff 170%) !important;
-    opacity: 0.7;
-    margin-bottom: 20px;
-
-}
-
-/* Change placeholder text color */
-#input-text-box::placeholder {
-    color: white;
-    /* Replace with your desired color in HEX, RGB or color name */
-    opacity: 1;
-    /* If you want a different opacity, adjust this value */
-}
 
 
 .conversation-form {
     display: flex;
     align-items: left;
     justify-content: space-between;
-    width: 80vw;
+    width: 100%;
 }
 
 .conversation-form input[type="text"] {
@@ -20704,22 +20674,21 @@ nav {
 
 }
 
+
 .generate-btn {
-    background: linear-gradient(45deg, #00ffff 0, #9e47ad 100%) !important;
-    color: #fff;
+    background-image: url('../img/icons/send-icon.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 20px;
+    height: 20px;
     border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-    outline: none !important;
-    height: 50px;
-
+    margin-right: 10px;
 }
 
-.generate-btn:hover {
-    background-color: #0069d9;
-}
+
+
 
 
 
@@ -20728,21 +20697,9 @@ nav {
 
 }
 
-.form-container {
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
-}
 
 
 
-.card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    border-bottom: 1px solid #ccc;
-}
 
 .menu-items {
     margin-top: 20px;
@@ -20859,9 +20816,6 @@ nav {
 }
 
 
-#card-body-extend {
-    height: 99vh;
-}
 
 .prompt-text input[type="text"] {
     /* other styles */
@@ -21553,11 +21507,18 @@ button:focus {
 }
 
 .button-container {
+    width: 100%;
     display: flex;
     justify-content: space-between;
+
+
 }
 
 .action-button {
+    height: 100px;
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
     background-color: #007bff;
     color: white;
     padding: 10px;
@@ -21654,3 +21615,139 @@ button:focus {
     text-align: left;
     color: black;
 }
+
+
+.form-container {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 12px;
+    border-radius: 20px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+#input-text-box {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    color: black;
+    opacity: 0.7;
+    margin-bottom: 0;
+    /* Changed margin-bottom from 20px to 0 */
+    border: none;
+    /* Add this to remove the border around the input element */
+}
+
+#input-text-box::placeholder {
+    color: black;
+    opacity: 1;
+}
+
+#input-text-box:focus {
+    outline: none;
+}
+
+
+
+
+
+.generate-btn:focus {
+    outline: none;
+}
+
+
+.icon-menu {
+    position: relative;
+    display: inline-block;
+    margin-left: 8px;
+}
+
+.expandable-btn {
+    background-color: #007bff;
+    /* blue background color */
+    color: #ffffff;
+    /* white text color */
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    height: 100%;
+    width: 300px;
+}
+
+.expandable-btn:hover {
+    background-color: #0069d9;
+    /* slightly darker blue background color */
+}
+
+.expandable-btn:focus {
+    outline: none;
+}
+
+.icon-menu-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    /* light gray background color */
+    min-width: 120px;
+    box-shadow: 0px -8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 9999999;
+    bottom: 100%;
+    /* Add this line to make it expand upwards */
+    margin-bottom: 8px;
+    /* Add this line for a small gap between the button and menu */
+}
+
+
+.icon-menu-content .circle-icon {
+    display: block;
+    background-color: #f1f1f1;
+    /* light gray background color */
+    color: #000000;
+    /* black text color */
+    text-align: center;
+    padding: 6px 12px;
+    width: 36px;
+    height: 36px;
+    line-height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.icon-menu-content .circle-icon:hover {
+    background-color: #ddd;
+    /* slightly darker gray background color */
+}
+
+.gpt-input-group {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    border: 2px solid purple;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.card-footer {
+    padding: 1.25rem 1.5rem;
+
+    border-top: 1px solid rgba(0, 0, 0, .05);
+    background-color: #fff;
+}
+
+.card-header {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(0, 0, 0, .05);
+    background-color: #fff;
+}
+
+.edit-btn {}

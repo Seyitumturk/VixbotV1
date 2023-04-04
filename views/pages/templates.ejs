@@ -5,7 +5,7 @@
         <div class="main-content">
             <!-- Top navbar -->
             <!-- Header -->
-            <% include ../partials/header %>
+            <% include ../partials/header-clean %>
                 <!-- Page content -->
                 <div class="container-fluid mt--7">
                     <!-- Table -->
@@ -17,37 +17,6 @@
                                 </div>
                                 <div class="card-body">
 
-
-                                    <div class="col-lg-3 col-md-6">
-
-                                        <h3>Create a New Template</h3>
-                                        <form id="create-template-form" method="POST" action="/create-template">
-                                            <label for="template-name">Template Name:</label>
-                                            <input type="text" id="template-name" name="template_name" required>
-
-                                            <label for="main-features">Main Features:</label>
-                                            <textarea id="main-features" name="main_features" required></textarea>
-
-                                            <label for="unique-selling-points">Unique Selling Points:</label>
-                                            <textarea id="unique-selling-points" name="unique_selling_points"
-                                                required></textarea>
-
-                                            <label for="pricing-model">Pricing Model:</label>
-                                            <select id="pricing-model" name="pricing_model" required>
-                                                <option value="">Choose a pricing model</option>
-                                                <option value="pay-per-use">Pay-per-use</option>
-                                                <option value="subscription">Subscription</option>
-                                                <option value="one-time-fee">One-time fee</option>
-                                            </select>
-
-                                            <label for="distribution-channels">Distribution Channels:</label>
-                                            <input type="text" id="distribution-channels" name="distribution_channels"
-                                                required>
-
-                                            <button type="submit">Create Template</button>
-                                        </form>
-
-                                    </div>
 
 
 

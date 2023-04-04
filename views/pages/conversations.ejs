@@ -3,66 +3,71 @@
     <% include ../partials/sidebar %>
         <!-- Main content -->
         <div class="main-content">
-
             <!-- Top navbar -->
 
             <!-- Page content -->
             <div class="container-fluid ">
-                <!-- Table -->
-                <div class="row">
-                    <div class="col">
-                        <div class="card shadow">
+                <h1> Create </h1>
 
 
 
-                            <div id="card-body-extend" class="card-body">
-                                <div class="responses-container" id="responses-container">
-                                    <!-- Response cards go here -->
-                                </div>
-                                <div class="card-header bg-transparent">
+                <div class="card shadow">
 
 
+                    <div class="card-body">
 
-
-                                    <div class="form-container">
-                                        <form id="conversation-form" autocomplete="off" class="conversation-form">
-                                            <input id="input-text-box" type="text" name="text"
-                                                placeholder="Type your message here...">
-                                            <button type="submit" class="generate-btn"> Generate</button>
-                                        </form>
-
+                        <div class="responses-container" id="responses-container">
+                            <!-- Response cards go here -->
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <div class="form-container">
+                                <form id="conversation-form" autocomplete="off" class="conversation-form">
+                                    <div class="gpt-input-group">
+                                        <input id="input-text-box" type="text" name="text"
+                                            placeholder="Type your message here...">
+                                        <button type="submit" class="generate-btn"> </button>
                                     </div>
-
-                                    <div class="button-container">
-                                        <button id="chooseProductButton" class="action-button">Choose Product</button>
-                                        <button id="chooseTemplateButton" class="action-button">Choose Template</button>
-                                    </div>
-
-
-                                    <!-- Add this for the modal -->
-                                    <!-- Add this for the modal -->
-                                    <div id="productModal" class="modal">
-                                        <div class="modal-content">
-                                            <span class="close">&times;</span>
-                                            <div id="productMenu">
-                                                <% products.forEach((product)=> { %>
-                                                    <button class="product-item"
-                                                        data-product='<%- JSON.stringify(product) %>'>
-                                                        <%= product.product_name %>
-                                                    </button>
-                                                    <% }); %>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
+                                </form>
                             </div>
 
-                        </div>
+                            <div class="button-container">
+                                <button id="chooseProductButton" class="action-button">Choose Product</button>
+                                <button id="chooseTemplateButton" class="action-button">Choose Template</button>
+                                <div class="icon-menu">
+                                    <button type="button" class="expandable-btn">☰</button>
+                                    <div class="icon-menu-content">
+                                        <button type="button" class="circle-icon">A</button>
+                                        <button type="button" class="circle-icon">B</button>
+                                        <button type="button" class="circle-icon">C</button>
+                                    </div>
+                                </div>
+                            </div>
 
+
+                            <!-- Add this for the modal -->
+                            <div id="productModal" class="modal">
+                                <div class="modal-content">
+                                    <span class="close">&times;</span>
+                                    <div id="productMenu">
+                                        <% products.forEach((product)=> { %>
+                                            <button class="product-item" data-product='<%- JSON.stringify(product) %>'>
+                                                <%= product.product_name %>
+                                            </button>
+                                            <% }); %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+
+                <script>
+                    document.querySelector('.expandable-btn').addEventListener('click', function () {
+                        var menuContent = document.querySelector('.icon-menu-content');
+                        menuContent.style.display = menuContent.style.display === 'block' ? 'none' : 'block';
+                    });
+                </script>
 
                 <script>
                     document.addEventListener("DOMContentLoaded", () => {
@@ -98,7 +103,6 @@
                             });
                         });
                     });
-
 
                     let conversationHistory = [
                         { role: "system", content: "You are a helpful assistant." }
