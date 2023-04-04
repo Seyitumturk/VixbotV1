@@ -215,7 +215,7 @@ router.post('/conversations', isAuthenticated, async (req, res) => {
 
   const configuration = new Configuration({
     organization: "org-JIjsH2CYD6sKM4gstuapQD1f",
-    apiKey: "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"
+    apiKey: "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"
   })
 
   const openai = new OpenAIApi(configuration);
